@@ -62,6 +62,31 @@ Serverless architecture ensures zero idle costs—approximately ₹0.40 per reco
 
 ---
 
+## 📱 Working Prototype
+
+**Scan the QR code below to try the live prototype:**
+
+<p align="center">
+  <img src="docs/screenshots/qr-code.png" alt="Scan QR Code for Live Prototype" width="300"/>
+</p>
+
+### App Screenshots
+
+<table>
+  <tr>
+    <td><img src="docs/screenshots/scan-prescription.png" alt="Scan Prescription" width="200"/><br/><b>Live AI Scanning</b><br/>Real-time OCR extraction with confidence scores</td>
+    <td><img src="docs/screenshots/ai-summary.png" alt="AI Summary" width="200"/><br/><b>Clinical Dashboard</b><br/>30-second AI summaries save 9.5 minutes per review</td>
+    <td><img src="docs/screenshots/health-passport.png" alt="Health Passport" width="200"/><br/><b>ABDM Integration</b><br/>ABHA ID linked health passport with encryption</td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/health-timeline.png" alt="Health Timeline" width="200"/><br/><b>FHIR Export</b><br/>One-click HL7 FHIR export for global interoperability</td>
+    <td><img src="docs/screenshots/records-library.png" alt="Records Library" width="200"/><br/><b>Records Management</b><br/>Organized library with verification status</td>
+    <td><img src="docs/screenshots/voice-interface.png" alt="Voice Interface" width="200"/><br/><b>Multilingual Voice</b><br/>22 Indian languages via Bhashini API</td>
+  </tr>
+</table>
+
+---
+
 ## 🛠️ Technology Stack
 
 | Layer | Technology | Purpose |
