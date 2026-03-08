@@ -101,6 +101,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-radius: 50px;
+  color: #000000;
 }
 
 .app-title {
@@ -132,6 +134,9 @@
   z-index: 1000;
   box-shadow: 0 -2px 10px var(--shadow-light);
   height: 70px;
+  margin: 0px;
+  border-radius: 50px;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Desktop: Bottom nav with rounded bottom corners */
@@ -609,6 +614,7 @@ p {
   margin-bottom: var(--spacing-lg);
   flex-wrap: wrap;
   gap: var(--spacing-md);
+  text-align: left;
 }
 
 .page-header h1 {
@@ -2103,7 +2109,7 @@ p {
 }
 
 .abha-id {
-  font-size: 1.5rem;
+  font-size: 15px;
   font-weight: 600;
   color: var(--primary-color);
   letter-spacing: 2px;
@@ -2121,7 +2127,7 @@ p {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 11px;
   transition: background 0.2s;
   min-height: var(--touch-target-min);
 }
