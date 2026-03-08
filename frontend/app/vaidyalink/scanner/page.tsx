@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { getPresignedUrl, uploadToS3 } from '@/lib/vaidyalink/api-client';
-import { processDocument } from '@/lib/vaidyalink/api-client';
+import { getPresignedUrl } from '@/lib/document-scan-demo/api-client';
+import { uploadToS3, processDocument } from '@/lib/vaidyalink/api-client';
 import type { ProcessingResults } from '@/lib/document-scan-demo/types';
 
 export default function ScannerPage() {

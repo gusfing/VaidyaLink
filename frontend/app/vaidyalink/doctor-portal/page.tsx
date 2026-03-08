@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import PatientSnapshot from '@/components/vaidyalink/PatientSnapshot';
 import { mockPatientProfile, mockClinicalSummary } from '@/lib/vaidyalink/mock-data';
 import { getClinicalSummary } from '@/lib/vaidyalink/api-client';
-import type { ClinicalSummaryResponse } from '@/lib/vaidyalink/api-client';
+import type { ClinicalSummary } from '@/lib/vaidyalink/types';
 
 export default function DoctorPortalPage() {
   const patient = mockPatientProfile;
-  const [summary, setSummary] = useState<ClinicalSummaryResponse>(mockClinicalSummary);
+  const [summary, setSummary] = useState<ClinicalSummary>(mockClinicalSummary);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -27,7 +27,34 @@ export default function DoctorPortalPage() {
         includeMedications: true,
         includeLabResults: true,
       });
-      setSummary(summaryData);
+
+      // Transform API response to match local type
+      const transformedSummary: ClinicalSummary = {
+        patientId: summaryData.patientId,
+        generatedAt: summaryData.generatedAt,
+        chiefComplaint: summaryData.chiefComplaint,
+        recentContext: summaryData.recentContext,
+        criticalFlags: summaryData.criticalFlags,
+        vitals: summaryData.vitals.map((vital) => ({
+          type: vital.type as 'blood-pressure' | 'heart-rate' | 'temperature' | 'oxygen-saturation',
+          value: vital.value,
+          unit: vital.unit,
+          timestamp: vital.timestamp,
+          normal: vital.normal,
+        })),
+        medications: summaryData.medications,
+        recentLabs: summaryData.recentLabs.map((lab) => ({
+          testName: lab.testName,
+          value: lab.value,
+          unit: lab.unit,
+          referenceRange: lab.referenceRange || '',
+          date: lab.timestamp,
+        })),
+        timeSavedMinutes: summaryData.timeSavedMinutes,
+        confidence: summaryData.confidence,
+      };
+
+      setSummary(transformedSummary);
     } catch (err) {
       console.error('Failed to load clinical summary:', err);
       setError('Failed to load clinical summary. Using cached data.');

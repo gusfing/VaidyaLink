@@ -4,10 +4,9 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
 
-  // Disable Next.js build indicator widget
+  // Disable Next.js build indicator widget (appDir only)
   devIndicators: {
-    buildActivity: false,
-    buildActivityPosition: 'bottom-right',
+    position: 'bottom-right',
   },
 
   // Image optimization for medical documents
