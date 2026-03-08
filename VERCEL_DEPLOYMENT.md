@@ -88,11 +88,26 @@ To add a custom domain:
 
 ## Troubleshooting
 
+### 404 Error on Deployment
+
+If you're seeing a 404 error after deployment, the issue is likely that Vercel needs to know your Next.js app is in the `frontend` subdirectory:
+
+1. Go to your project in [Vercel Dashboard](https://vercel.com/dashboard)
+2. Navigate to Settings → General
+3. Under "Build & Development Settings", set:
+   - **Root Directory**: `frontend`
+   - Click "Edit" next to Root Directory
+   - Enter `frontend` and save
+4. Redeploy your project
+
+The root `vercel.json` file is already configured to handle this, but you may need to set it manually in the dashboard.
+
 ### Build Fails
 
 - Check that all dependencies are in `frontend/package.json`
 - Verify Node.js version compatibility (18.x or higher)
 - Check build logs in Vercel Dashboard
+- Ensure the Root Directory is set to `frontend` in project settings
 
 ### Environment Variables Not Working
 
