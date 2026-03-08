@@ -15,21 +15,19 @@
 import { useState, useRef, useEffect } from 'react';
 import { useToast } from './ToastContainer';
 
-// Supported languages
+// Supported languages with Sarvam AI language codes
 const LANGUAGES = [
-  { code: 'en', name: 'English', native: 'English' },
-  { code: 'hi', name: 'Hindi', native: 'हिंदी' },
-  { code: 'bn', name: 'Bengali', native: 'বাংলা' },
-  { code: 'te', name: 'Telugu', native: 'తెలుగు' },
-  { code: 'mr', name: 'Marathi', native: 'मराठी' },
-  { code: 'ta', name: 'Tamil', native: 'தமிழ்' },
-  { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી' },
-  { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ' },
-  { code: 'ml', name: 'Malayalam', native: 'മലയാളം' },
-  { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ' },
-  { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ' },
-  { code: 'as', name: 'Assamese', native: 'অসমীয়া' },
-  { code: 'ur', name: 'Urdu', native: 'اردو' },
+  { code: 'en-IN', name: 'English', native: 'English' },
+  { code: 'hi-IN', name: 'Hindi', native: 'हिंदी' },
+  { code: 'bn-IN', name: 'Bengali', native: 'বাংলা' },
+  { code: 'te-IN', name: 'Telugu', native: 'తెలుగు' },
+  { code: 'mr-IN', name: 'Marathi', native: 'मराठी' },
+  { code: 'ta-IN', name: 'Tamil', native: 'தமிழ்' },
+  { code: 'gu-IN', name: 'Gujarati', native: 'ગુજરાતી' },
+  { code: 'kn-IN', name: 'Kannada', native: 'ಕನ್ನಡ' },
+  { code: 'ml-IN', name: 'Malayalam', native: 'മലയാളം' },
+  { code: 'pa-IN', name: 'Punjabi', native: 'ਪੰਜਾਬੀ' },
+  { code: 'or-IN', name: 'Odia', native: 'ଓଡ଼ିଆ' },
 ];
 
 interface VoiceRecorderProps {
@@ -52,7 +50,7 @@ export interface VoiceTranscriptionResult {
 }
 
 export default function VoiceRecorder({ onTranscriptionComplete }: VoiceRecorderProps) {
-  const [selectedLanguage, setSelectedLanguage] = useState('hi');
+  const [selectedLanguage, setSelectedLanguage] = useState('hi-IN');
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -119,9 +117,39 @@ export default function VoiceRecorder({ onTranscriptionComplete }: VoiceRecorder
     setIsProcessing(true);
 
     try {
-      // Always use demo mode for now (API endpoints not yet deployed)
-      // TODO: Enable real API when voice processing Lambda is deployed
-      await simulateProcessing();
+      // Create form data with audio file
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'recording.wav');
+      formData.append('language', selectedLanguage);
+
+      // Call transcription API
+      const response = await fetch('/api/voice/transcribe', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Transcription failed');
+      }
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.error || 'Transcription failed');
+      }
+
+      // Create result object
+      const result: VoiceTranscriptionResult = {
+        jobId: `voice-${Date.now()}`,
+        transcription: data.transcription,
+        detectedLanguage: data.detectedLanguage,
+        confidence: data.confidence,
+        structuredData: data.structuredData || {},
+      };
+
+      setIsProcessing(false);
+      showSuccess('Voice processed successfully!');
+      onTranscriptionComplete(result);
     } catch (error) {
       console.error('Processing failed:', error);
       showError('Failed to process recording. Please try again.');
@@ -284,7 +312,7 @@ export default function VoiceRecorder({ onTranscriptionComplete }: VoiceRecorder
               </option>
             ))}
           </select>
-          <p className="mt-1 text-xs text-gray-500">Supports 22 Indian languages via Sarvam API</p>
+          <p className="mt-1 text-xs text-gray-500">Real-time transcription powered by Sarvam AI</p>
         </div>
 
         {/* Recording Interface */}
