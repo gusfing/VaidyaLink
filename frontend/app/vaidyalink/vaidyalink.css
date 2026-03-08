@@ -88,7 +88,6 @@
     transform: translateX(-50%);
     max-width: 430px;
     width: 100%;
-    border-radius: 24px 24px 0 0;
     top: 2rem;
   }
 }
@@ -146,7 +145,6 @@
     transform: translateX(-50%);
     max-width: 430px;
     width: 100%;
-    border-radius: 0 0 24px 24px;
     bottom: 2rem;
   }
 }
@@ -2298,7 +2296,7 @@ p {
   }
 
   .abha-id {
-    font-size: 1.25rem;
+    font-size: 15px;
   }
 
   .qr-code-placeholder {
