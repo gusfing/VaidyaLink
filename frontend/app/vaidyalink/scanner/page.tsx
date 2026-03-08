@@ -12,6 +12,7 @@ export default function ScannerPage() {
   const [results, setResults] = useState<ProcessingResults | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -34,21 +35,38 @@ export default function ScannerPage() {
     setError(null);
 
     try {
-      // Step 1: Get presigned URL for upload
-      const { uploadUrl, s3Key } = await getPresignedUrl(file.name);
+      // In demo mode, we simulate the upload and processing
+      const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 
-      // Step 2: Upload to S3
-      await uploadToS3(uploadUrl, file, file.type);
+      if (isDemoMode) {
+        // Simulate upload delay
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Step 3: Process document
-      const processingResults = await processDocument(s3Key);
+        // Process document with demo data
+        const processingResults = await processDocument(file.name);
 
-      setResults(processingResults);
+        setResults(processingResults);
+      } else {
+        // Production mode: actual upload and processing
+        // Step 1: Get presigned URL for upload
+        const { uploadUrl, s3Key } = await getPresignedUrl(file.name);
+
+        // Step 2: Upload to S3
+        await uploadToS3(uploadUrl, file, file.type);
+
+        // Step 3: Process document
+        const processingResults = await processDocument(s3Key);
+
+        setResults(processingResults);
+      }
+
       setScanning(false);
       setProcessing(false);
     } catch (err) {
       console.error('Failed to process document:', err);
-      setError('Failed to process document. Please try again.');
+      setError(
+        err instanceof Error ? err.message : 'Failed to process document. Please try again.'
+      );
       setScanning(false);
       setProcessing(false);
     }
@@ -70,6 +88,13 @@ export default function ScannerPage() {
     <div className="scanner-page">
       <h1>AI Document Scanner</h1>
       <p className="subtitle">Scan and digitize medical documents</p>
+
+      {isDemoMode && (
+        <div className="demo-badge">
+          <span className="material-symbols-outlined">science</span>
+          Demo Mode - Simulated Results
+        </div>
+      )}
 
       {/* Hidden file input */}
       <input
@@ -118,8 +143,19 @@ export default function ScannerPage() {
             <span className="material-symbols-outlined">
               {processing ? 'hourglass_empty' : 'document_scanner'}
             </span>
-            {processing ? 'Processing...' : capturedImage ? 'Scan Another' : 'Select Document'}
+            {processing
+              ? 'Processing...'
+              : capturedImage
+                ? 'Scan Another Document'
+                : 'Upload Document'}
           </button>
+
+          {isDemoMode && !processing && !results && (
+            <p className="demo-hint">
+              Click &quot;Upload Document&quot; to select an image file. Demo mode will show sample
+              results.
+            </p>
+          )}
         </div>
       )}
 
@@ -209,7 +245,7 @@ export default function ScannerPage() {
         <ul>
           <li>Place document within the scanning frame</li>
           <li>Ensure good lighting and focus</li>
-          <li>Tap "Confirm & Structure" to process</li>
+          <li>Tap &quot;Confirm & Structure&quot; to process</li>
           <li>AI will extract medical entities automatically</li>
         </ul>
       </div>
