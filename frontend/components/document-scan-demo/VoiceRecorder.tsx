@@ -423,32 +423,6 @@ export default function VoiceRecorder({ onTranscriptionComplete }: VoiceRecorder
             </div>
           </div>
         )}
-
-        {/* Demo Mode Notice */}
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <div className="flex items-start space-x-3">
-            <svg
-              className="mt-0.5 h-5 w-5 text-blue-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <div>
-              <p className="text-sm font-medium text-blue-800">Demo Mode Active</p>
-              <p className="mt-1 text-xs text-blue-600">
-                Using mock transcription for demonstration. Voice recording works, but transcription
-                is simulated with sample data in your selected language.
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
