@@ -1,0 +1,13 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "outputDirectory": ".next",
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://ptln3qd359.execute-api.ap-south-1.amazonaws.com/prod",
+    "NEXT_PUBLIC_AWS_REGION": "ap-south-1",
+    "NEXT_PUBLIC_DEMO_MODE": "true",
+    "NEXT_PUBLIC_SKIP_AUTH": "true"
+  }
+}
