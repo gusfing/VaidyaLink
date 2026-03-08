@@ -119,16 +119,9 @@ export default function VoiceRecorder({ onTranscriptionComplete }: VoiceRecorder
     setIsProcessing(true);
 
     try {
-      // Check if demo mode is enabled
-      const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
-
-      if (isDemoMode) {
-        // Demo mode: Simulate processing with mock data
-        await simulateProcessing();
-      } else {
-        // Real mode: Upload to S3 and process with Sarvam API
-        await processWithSarvamAPI();
-      }
+      // Always use demo mode for now (API endpoints not yet deployed)
+      // TODO: Enable real API when voice processing Lambda is deployed
+      await simulateProcessing();
     } catch (error) {
       console.error('Processing failed:', error);
       showError('Failed to process recording. Please try again.');
@@ -432,32 +425,30 @@ export default function VoiceRecorder({ onTranscriptionComplete }: VoiceRecorder
         )}
 
         {/* Demo Mode Notice */}
-        {process.env.NEXT_PUBLIC_DEMO_MODE === 'true' && (
-          <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-            <div className="flex items-start space-x-3">
-              <svg
-                className="mt-0.5 h-5 w-5 text-blue-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <div>
-                <p className="text-sm font-medium text-blue-800">Demo Mode Active</p>
-                <p className="mt-1 text-xs text-blue-600">
-                  Using mock transcription. Deploy voice processing Lambda with Sarvam API key for
-                  real transcription.
-                </p>
-              </div>
+        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <div className="flex items-start space-x-3">
+            <svg
+              className="mt-0.5 h-5 w-5 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <div>
+              <p className="text-sm font-medium text-blue-800">Demo Mode Active</p>
+              <p className="mt-1 text-xs text-blue-600">
+                Using mock transcription for demonstration. Voice recording works, but transcription
+                is simulated with sample data in your selected language.
+              </p>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
