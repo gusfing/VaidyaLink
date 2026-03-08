@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     const sarvamFormData = new FormData();
     sarvamFormData.append('file', audioBlob, 'audio.wav');
     sarvamFormData.append('language_code', language || 'hi-IN');
-    sarvamFormData.append('model', 'saarika:v1');
+    sarvamFormData.append('model', 'saarika:v2.5');
 
     console.log('Calling Sarvam API...');
 
