@@ -13,6 +13,12 @@ export async function POST(request: NextRequest) {
     const audioFile = formData.get('audio') as File;
     const language = formData.get('language') as string;
 
+    console.log('Received transcription request:', {
+      hasAudio: !!audioFile,
+      language,
+      audioSize: audioFile?.size,
+    });
+
     if (!audioFile) {
       return NextResponse.json({ error: 'No audio file provided' }, { status: 400 });
     }
@@ -28,23 +34,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convert audio file to base64 for Sarvam API
+    console.log('Sarvam API key found, processing audio...');
+
+    // Convert audio file to buffer for Sarvam API
     const audioBuffer = await audioFile.arrayBuffer();
-    const audioBase64 = Buffer.from(audioBuffer).toString('base64');
+    const audioBlob = new Blob([audioBuffer], { type: 'audio/wav' });
+
+    // Create form data for Sarvam API
+    const sarvamFormData = new FormData();
+    sarvamFormData.append('file', audioBlob, 'audio.wav');
+    sarvamFormData.append('language_code', language || 'hi-IN');
+    sarvamFormData.append('model', 'saarika:v1');
+
+    console.log('Calling Sarvam API...');
 
     // Call Sarvam AI API
     const sarvamResponse = await fetch('https://api.sarvam.ai/speech-to-text', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${sarvamApiKey}`,
+        'api-subscription-key': sarvamApiKey,
       },
-      body: JSON.stringify({
-        audio: audioBase64,
-        language_code: language || 'hi-IN',
-        model: 'saarika:v1',
-      }),
+      body: sarvamFormData,
     });
+
+    console.log('Sarvam API response status:', sarvamResponse.status);
 
     if (!sarvamResponse.ok) {
       const errorText = await sarvamResponse.text();
@@ -56,18 +69,29 @@ export async function POST(request: NextRequest) {
     }
 
     const sarvamData = await sarvamResponse.json();
+    console.log('Sarvam API response:', sarvamData);
 
     // Extract transcription from Sarvam response
     const transcription = sarvamData.transcript || '';
 
+    if (!transcription) {
+      console.error('No transcription in response:', sarvamData);
+      return NextResponse.json({ error: 'No transcription returned' }, { status: 500 });
+    }
+
     // Simple medical entity extraction (basic pattern matching)
     const structuredData = extractMedicalEntities(transcription);
+
+    console.log('Transcription successful:', {
+      transcriptionLength: transcription.length,
+      language,
+    });
 
     return NextResponse.json({
       success: true,
       transcription,
       detectedLanguage: language || 'hi',
-      confidence: 0.9, // Sarvam doesn't provide confidence, use default
+      confidence: 0.9,
       structuredData,
     });
   } catch (error) {
