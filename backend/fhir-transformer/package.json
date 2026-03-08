@@ -1,0 +1,24 @@
+{
+  "name": "@vaidyalink/fhir-transformer",
+  "version": "1.0.0",
+  "description": "FHIR Transformer Lambda - Convert structured clinical data to HL7 FHIR R4 resources",
+  "private": true,
+  "scripts": {
+    "test": "cd src && python -m pytest",
+    "test:coverage": "cd src && python -m pytest --cov=. --cov-report=html --cov-report=term",
+    "lint": "flake8 src --max-line-length=120 --exclude=__pycache__,node_modules,.pytest_cache",
+    "format": "black src --line-length=120",
+    "format:check": "black src --check --line-length=120",
+    "type-check": "mypy src --ignore-missing-imports",
+    "clean": "find . -type d -name __pycache__ -exec rm -rf {} + && find . -type d -name .pytest_cache -exec rm -rf {} + && find . -type f -name '*.pyc' -delete"
+  },
+  "keywords": [
+    "fhir",
+    "healthcare",
+    "lambda",
+    "aws",
+    "hl7"
+  ],
+  "author": "VaidyaLink Team",
+  "license": "UNLICENSED"
+}

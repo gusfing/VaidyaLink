@@ -1,0 +1,2335 @@
+{
+  "version": "50.0.0",
+  "artifacts": {
+    "VaidyaLink-dev.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "VaidyaLink-dev.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "VaidyaLink-dev": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://038208944386/us-east-1",
+      "properties": {
+        "templateFile": "VaidyaLink-dev.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "Environment": "dev",
+          "ManagedBy": "CDK",
+          "Project": "VaidyaLink"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::038208944386:role/cdk-hnb659fds-deploy-role-038208944386-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::038208944386:role/cdk-hnb659fds-cfn-exec-role-038208944386-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-038208944386-us-east-1/dd94f191a68ab67ef17bf6904931757e05559d11773c7fdc468054fa0ba487d8.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "VaidyaLink-dev.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::038208944386:role/cdk-hnb659fds-lookup-role-038208944386-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        },
+        "stackName": "vaidyalink-dev"
+      },
+      "dependencies": [
+        "VaidyaLink-dev.assets"
+      ],
+      "metadata": {
+        "/VaidyaLink-dev": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "Environment",
+                "Value": "dev"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "CDK"
+              },
+              {
+                "Key": "Project",
+                "Value": "VaidyaLink"
+              }
+            ]
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCB6EDBD34"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet1SubnetFBCA1DCD"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet1RouteTable1694DCD0"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet1RouteTableAssociationB7790AC3"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet1DefaultRoute9271462B"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet1EIPEDDB1BB9"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet1NATGatewayE83D1C54"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet2Subnet8E3014EC"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet2RouteTable5E8A6689"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet2RouteTableAssociation57B0368A"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet2DefaultRoute1340CD0B"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet2/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet2EIPF7CBB4ED"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PublicSubnet2/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPublicSubnet2NATGateway9F7E6871"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PrivateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPrivateSubnet1Subnet7EA2C3CE"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PrivateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPrivateSubnet1RouteTable4642191B"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PrivateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPrivateSubnet1RouteTableAssociationB7D2E0D0"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PrivateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPrivateSubnet1DefaultRouteD6901583"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PrivateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPrivateSubnet2SubnetC84DC537"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PrivateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPrivateSubnet2RouteTable0B5550DA"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PrivateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPrivateSubnet2RouteTableAssociation7ED38962"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/PrivateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCPrivateSubnet2DefaultRouteDA766091"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/IsolatedSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCIsolatedSubnet1Subnet6A847D92"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/IsolatedSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCIsolatedSubnet1RouteTable46BAEC5B"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/IsolatedSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCIsolatedSubnet1RouteTableAssociation319F0E21"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/IsolatedSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCIsolatedSubnet2Subnet1C5805FE"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/IsolatedSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCIsolatedSubnet2RouteTableF62285C1"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/IsolatedSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCIsolatedSubnet2RouteTableAssociation7A4C7FF1"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCIGW5770D398"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCVPCGW84AD0560"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCRestrictDefaultSecurityGroupCustomResource14131337"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/S3Endpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCS3Endpoint5EE8BDDD"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/DynamoDBEndpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCDynamoDBEndpointE97D24C4"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/KMSEndpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCKMSEndpoint9386476F"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/CloudWatchLogsEndpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCCloudWatchLogsEndpoint32B2EB44"
+          }
+        ],
+        "/VaidyaLink-dev/VaidyaLinkVPC/STSEndpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VaidyaLinkVPCSTSEndpoint9C7617FB"
+          }
+        ],
+        "/VaidyaLink-dev/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/VaidyaLink-dev/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/VaidyaLink-dev/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/VaidyaLink-dev/VPCEndpointsSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCEndpointsSecurityGroup591BED88"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaSecurityGroup": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "Ignoring Egress rule since 'allowAllOutbound' is set to true; To add customized rules, set allowAllOutbound=false on the SecurityGroup [ack: @aws-cdk/aws-ec2:ipv4IgnoreEgressRule]",
+            "trace": [
+              "Annotations.addMessage (C:\\Users\\ks209\\Downloads\\VaidyaLink\\node_modules\\.pnpm\\aws-cdk-lib@2.240.0_constructs@10.5.1\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:2066)",
+              "Annotations.addWarningV2 (C:\\Users\\ks209\\Downloads\\VaidyaLink\\node_modules\\.pnpm\\aws-cdk-lib@2.240.0_constructs@10.5.1\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:984)",
+              "WrappedClass.addEgressRule (C:\\Users\\ks209\\Downloads\\VaidyaLink\\node_modules\\.pnpm\\aws-cdk-lib@2.240.0_constructs@10.5.1\\node_modules\\aws-cdk-lib\\aws-ec2\\lib\\security-group.js:1:11164)",
+              "WrappedClass.<anonymous> (C:\\Users\\ks209\\Downloads\\VaidyaLink\\node_modules\\.pnpm\\aws-cdk-lib@2.240.0_constructs@10.5.1\\node_modules\\aws-cdk-lib\\core\\lib\\metadata-resource.js:1:2015)",
+              "new VaidyaLinkStack (C:\\Users\\ks209\\Downloads\\VaidyaLink\\infrastructure\\lib\\vaidyalink-stack.ts:202:30)",
+              "Object.<anonymous> (C:\\Users\\ks209\\Downloads\\VaidyaLink\\infrastructure\\bin\\vaidyalink.ts:19:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+              "Module.m._compile (C:\\Users\\ks209\\Downloads\\VaidyaLink\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.33_typescript@5.9.3\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+              "node:internal/modules/cjs/loader:1839:10",
+              "Object.require.extensions.<computed> [as .ts] (C:\\Users\\ks209\\Downloads\\VaidyaLink\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.33_typescript@5.9.3\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+              "Module.load (node:internal/modules/cjs/loader:1441:32)",
+              "Function._load (node:internal/modules/cjs/loader:1263:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+              "phase4 (C:\\Users\\ks209\\Downloads\\VaidyaLink\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.33_typescript@5.9.3\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+              "bootstrap (C:\\Users\\ks209\\Downloads\\VaidyaLink\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.33_typescript@5.9.3\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+              "main (C:\\Users\\ks209\\Downloads\\VaidyaLink\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.33_typescript@5.9.3\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+              "Object.<anonymous> (C:\\Users\\ks209\\Downloads\\VaidyaLink\\node_modules\\.pnpm\\ts-node@10.9.2_@types+node@20.19.33_typescript@5.9.3\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+              "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+              "Module.load (node:internal/modules/cjs/loader:1441:32)",
+              "Function._load (node:internal/modules/cjs/loader:1263:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+              "node:internal/main/run_main_module:36:49"
+            ]
+          }
+        ],
+        "/VaidyaLink-dev/LambdaSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaSecurityGroup0BD9FC99"
+          }
+        ],
+        "/VaidyaLink-dev/Security/EncryptionKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityEncryptionKey6F36E793"
+          }
+        ],
+        "/VaidyaLink-dev/Security/EncryptionKey/Alias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityEncryptionKeyAlias68E79D42"
+          }
+        ],
+        "/VaidyaLink-dev/Security/S3EncryptionKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityS3EncryptionKeyC8EB9D0A"
+          }
+        ],
+        "/VaidyaLink-dev/Security/S3EncryptionKey/Alias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityS3EncryptionKeyAlias4AA55996"
+          }
+        ],
+        "/VaidyaLink-dev/Security/DynamoDbEncryptionKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityDynamoDbEncryptionKey40E9F2F7"
+          }
+        ],
+        "/VaidyaLink-dev/Security/DynamoDbEncryptionKey/Alias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityDynamoDbEncryptionKeyAlias54AE7AEB"
+          }
+        ],
+        "/VaidyaLink-dev/Security/SecretsEncryptionKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecuritySecretsEncryptionKey8B30BCDD"
+          }
+        ],
+        "/VaidyaLink-dev/Security/SecretsEncryptionKey/Alias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecuritySecretsEncryptionKeyAlias2CBBB13C"
+          }
+        ],
+        "/VaidyaLink-dev/Security/UserPool/smsRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityUserPoolsmsRoleEA357F69"
+          }
+        ],
+        "/VaidyaLink-dev/Security/UserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityUserPoolEDFED993"
+          }
+        ],
+        "/VaidyaLink-dev/Security/UserPool/UserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityUserPoolUserPoolClientDDAD954F"
+          }
+        ],
+        "/VaidyaLink-dev/Security/IdentityPool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityIdentityPool3053C056"
+          }
+        ],
+        "/VaidyaLink-dev/Security/AuthenticatedRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityAuthenticatedRoleFFBC17DD"
+          }
+        ],
+        "/VaidyaLink-dev/Security/IdentityPoolRoleAttachment": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityIdentityPoolRoleAttachment75E34ED8"
+          }
+        ],
+        "/VaidyaLink-dev/Security/PrimaryKeyId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityPrimaryKeyId43F9EC7A"
+          }
+        ],
+        "/VaidyaLink-dev/Security/PrimaryKeyArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityPrimaryKeyArn09157C97"
+          }
+        ],
+        "/VaidyaLink-dev/Security/S3KeyId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityS3KeyId999C0B9A"
+          }
+        ],
+        "/VaidyaLink-dev/Security/S3KeyArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityS3KeyArn0E94C981"
+          }
+        ],
+        "/VaidyaLink-dev/Security/DynamoDbKeyId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityDynamoDbKeyIdC3A165F9"
+          }
+        ],
+        "/VaidyaLink-dev/Security/DynamoDbKeyArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityDynamoDbKeyArn67647FFC"
+          }
+        ],
+        "/VaidyaLink-dev/Security/SecretsKeyId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecuritySecretsKeyId26E9FA88"
+          }
+        ],
+        "/VaidyaLink-dev/Security/SecretsKeyArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecuritySecretsKeyArnDA14AD49"
+          }
+        ],
+        "/VaidyaLink-dev/Storage/ScanJobsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "StorageScanJobsTable08156C24"
+            }
+          }
+        ],
+        "/VaidyaLink-dev/Storage/ScanJobsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageScanJobsTable08156C24"
+          }
+        ],
+        "/VaidyaLink-dev/Storage/PatientsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "StoragePatientsTable75ACF86C"
+            }
+          }
+        ],
+        "/VaidyaLink-dev/Storage/PatientsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StoragePatientsTable75ACF86C"
+          }
+        ],
+        "/VaidyaLink-dev/Storage/VoiceJobsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "StorageVoiceJobsTable6994DC22"
+            }
+          }
+        ],
+        "/VaidyaLink-dev/Storage/VoiceJobsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageVoiceJobsTable6994DC22"
+          }
+        ],
+        "/VaidyaLink-dev/Storage/MigrationsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "StorageMigrationsTableA37F395A"
+            }
+          }
+        ],
+        "/VaidyaLink-dev/Storage/MigrationsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageMigrationsTableA37F395A"
+          }
+        ],
+        "/VaidyaLink-dev/Storage/DocumentsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageDocumentsBucket59145458"
+          }
+        ],
+        "/VaidyaLink-dev/Storage/DocumentsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageDocumentsBucketPolicyB2031C66"
+          }
+        ],
+        "/VaidyaLink-dev/Storage/DocumentsBucket/Notifications/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageDocumentsBucketNotificationsEF84245F"
+          }
+        ],
+        "/VaidyaLink-dev/Storage/DocumentsBucket/AllowBucketNotificationsToVaidyaLinkdevLambdaFunctionsDocumentProcessingB73000C9": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageDocumentsBucketAllowBucketNotificationsToVaidyaLinkdevLambdaFunctionsDocumentProcessingB73000C9502750CC"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/HITLDeadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsHITLDeadLetterQueueE98ADF9B"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/HITLQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsHITLQueue92F95D1F"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/DocumentProcessing/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsDocumentProcessingServiceRole1B01FA21"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/DocumentProcessing/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsDocumentProcessingServiceRoleDefaultPolicy30DB7664"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/DocumentProcessing/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsDocumentProcessingD7BDB166"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/DocumentProcessing/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsDocumentProcessingLogRetentionAA0F512F"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/VoiceProcessing/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsVoiceProcessingServiceRoleEA02CAE3"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/VoiceProcessing/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsVoiceProcessingServiceRoleDefaultPolicy4EDB8BAF"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/VoiceProcessing/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsVoiceProcessing425963BC"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/VoiceProcessing/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsVoiceProcessingLogRetention0498E14C"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/ClinicalSummarizer/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsClinicalSummarizerServiceRole8DA259ED"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/ClinicalSummarizer/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsClinicalSummarizerServiceRoleDefaultPolicy9DF26F3E"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/ClinicalSummarizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsClinicalSummarizer481B0576"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/ClinicalSummarizer/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsClinicalSummarizerLogRetentionEB30F86F"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/FHIRTransformer/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsFHIRTransformerServiceRoleA9CE8464"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/FHIRTransformer/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsFHIRTransformerServiceRoleDefaultPolicy8BF165C9"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/FHIRTransformer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsFHIRTransformerFEA3F30B"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/FHIRTransformer/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsFHIRTransformerLogRetentionEE8ABFB1"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/ABDMConnector/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsABDMConnectorServiceRoleD12451FF"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/ABDMConnector/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsABDMConnectorServiceRoleDefaultPolicyFA1A8CC8"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/ABDMConnector/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsABDMConnector4CD472B3"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/ABDMConnector/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsABDMConnectorLogRetentionBBC768F1"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/HITLHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsHITLHandlerServiceRoleD94CBE0F"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/HITLHandler/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsHITLHandlerServiceRoleDefaultPolicyA05FF06D"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/HITLHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsHITLHandlerC49FEFE4"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaFunctions/HITLHandler/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionsHITLHandlerLogRetention3CF4EBB3"
+          }
+        ],
+        "/VaidyaLink-dev/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+          }
+        ],
+        "/VaidyaLink-dev/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB"
+          }
+        ],
+        "/VaidyaLink-dev/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/CorsConfig/CorsAllowedOrigins": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayCorsConfigCorsAllowedOrigins49104992"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/CorsConfig/CorsMaxAge": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayCorsConfigCorsMaxAgeF129246C"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/ApiGatewayLogs/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayApiGatewayLogs4E8CF719"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApi7538854B"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiDeploymentF3960560d661d9111d978af5acf610f805997516"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/DeploymentStage.dev/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiDeploymentStagedevE0DE3133"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiEndpoint8A8A12DA"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiOPTIONSDE91A6D5"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapi2FF35777"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiOPTIONS6778FF1D"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1486CE4E5"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1OPTIONSE83CC9AA"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansFEA329D7"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansOPTIONS68877893"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/POST/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.scans": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansPOSTApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1scans3EB8C6DA"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/POST/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.scans": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansPOSTApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1scansA9186330"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansPOST4D3173F4"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/{jobId}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansjobIdB8CAE50A"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/{jobId}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansjobIdOPTIONS1BE6813D"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/{jobId}/GET/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.scans.{jobId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansjobIdGETApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1scansjobId40F08812"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/{jobId}/GET/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.scans.{jobId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansjobIdGETApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1scansjobId24B3462C"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/{jobId}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansjobIdGET096C4CA9"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/{jobId}/data/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansjobIddataAAFD921E"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/{jobId}/data/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansjobIddataOPTIONSCDEAFE51"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/{jobId}/data/GET/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.scans.{jobId}.data": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansjobIddataGETApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1scansjobIddata7C443051"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/{jobId}/data/GET/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.scans.{jobId}.data": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansjobIddataGETApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1scansjobIddata92AA3CE6"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/scans/{jobId}/data/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1scansjobIddataGET11C12AF0"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voice32334FD8"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voiceOPTIONS681C0A2F"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/POST/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.voice": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voicePOSTApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1voice90BD27B1"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/POST/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.voice": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voicePOSTApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1voice556CC109"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voicePOSTFBDBD8EC"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/{jobId}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voicejobId1DB77C86"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/{jobId}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voicejobIdOPTIONS43F80435"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/{jobId}/confirm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voicejobIdconfirmA59175AD"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/{jobId}/confirm/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voicejobIdconfirmOPTIONS8CC7B253"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/{jobId}/confirm/POST/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.voice.{jobId}.confirm": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voicejobIdconfirmPOSTApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1voicejobIdconfirm02B9DAFC"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/{jobId}/confirm/POST/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.voice.{jobId}.confirm": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voicejobIdconfirmPOSTApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1voicejobIdconfirm8C647AAE"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/voice/{jobId}/confirm/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1voicejobIdconfirmPOSTE348F87E"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patients3B3EE29C"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsOPTIONSA5B5305A"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidCA67E81F"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidOPTIONS8AE34D28"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/records/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidrecords3DA9A131"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/records/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidrecordsOPTIONS1E785626"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/records/GET/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.patients.{id}.records": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidrecordsGETApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1patientsidrecords8620322D"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/records/GET/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.patients.{id}.records": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidrecordsGETApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1patientsidrecordsA24DDDCC"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/records/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidrecordsGETFD72D51F"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/summary/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidsummary0175B12F"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/summary/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidsummaryOPTIONS181E0A4E"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/summary/GET/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.patients.{id}.summary": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidsummaryGETApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1patientsidsummary385B603A"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/summary/GET/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.patients.{id}.summary": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidsummaryGETApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1patientsidsummary1B19766A"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/summary/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidsummaryGET80EA3CF2"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/export/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidexportB803090F"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/export/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidexportOPTIONSA18166D2"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/export/GET/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.patients.{id}.export": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidexportGETApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1patientsidexport51297985"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/export/GET/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.patients.{id}.export": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidexportGETApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1patientsidexportEA3ABA24"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/patients/{id}/export/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1patientsidexportGET08A96283"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdm192D9FE5"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmOPTIONSAE953A48"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/link/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmlink6FF397E8"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/link/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmlinkOPTIONSA0993F19"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/link/POST/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.abdm.link": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmlinkPOSTApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1abdmlink2EF597A0"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/link/POST/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.abdm.link": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmlinkPOSTApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1abdmlink00A8875D"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/link/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmlinkPOST7EE88EFB"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/records/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmrecordsF55ED0FC"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/records/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmrecordsOPTIONSB6969E02"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/records/GET/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.abdm.records": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmrecordsGETApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1abdmrecords709093FE"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/records/GET/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.abdm.records": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmrecordsGETApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1abdmrecords243F6E03"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/records/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmrecordsGETE2F0B71F"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/consent/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmconsentAB012D2B"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/consent/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmconsentOPTIONS05C8A768"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/consent/POST/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.abdm.consent": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmconsentPOSTApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1abdmconsentD80D5F86"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/consent/POST/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.abdm.consent": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmconsentPOSTApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1abdmconsent613D1E8C"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/abdm/consent/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1abdmconsentPOSTD14A0300"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitl4C020296"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitlOPTIONS832B5FB2"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitlqueue7A9A4AD0"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/queue/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitlqueueOPTIONS5E4C75C1"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/queue/GET/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.hitl.queue": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitlqueueGETApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1hitlqueue77A7D9BB"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/queue/GET/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.GET..api.v1.hitl.queue": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitlqueueGETApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7GETapiv1hitlqueueE0E0412F"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/queue/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitlqueueGET3F818C21"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/{jobId}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitljobIdB967476C"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/{jobId}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitljobIdOPTIONSF0EED98D"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/{jobId}/verify/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitljobIdverify062BF5F5"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/{jobId}/verify/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitljobIdverifyOPTIONS7166618B"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/{jobId}/verify/POST/ApiPermission.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.hitl.{jobId}.verify": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitljobIdverifyPOSTApiPermissionVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1hitljobIdverify467973FB"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/{jobId}/verify/POST/ApiPermission.Test.VaidyaLinkdevApiGatewayRestApi3C75A1C7.POST..api.v1.hitl.{jobId}.verify": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitljobIdverifyPOSTApiPermissionTestVaidyaLinkdevApiGatewayRestApi3C75A1C7POSTapiv1hitljobIdverify3887CBF6"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/Default/api/v1/hitl/{jobId}/verify/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiapiv1hitljobIdverifyPOST228A9702"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RestApi/UsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRestApiUsagePlanDAD804ED"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/CognitoAuthorizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayCognitoAuthorizer77052CC4"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/RequestValidator/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayRequestValidator30C35E95"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/BodyOnlyValidator/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayBodyOnlyValidator5B21334F"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/ParamsOnlyValidator/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayParamsOnlyValidator9424E7C8"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/CreateScanRequest/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayCreateScanRequest7517B038"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/CreateVoiceRequest/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayCreateVoiceRequestA0C182B9"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/ConfirmVoiceRequest/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayConfirmVoiceRequestDB8A0D86"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/LinkABHARequest/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayLinkABHARequestC6F972DD"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/ConsentRequest/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayConsentRequestD47A1C0A"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/VerifyHITLRequest/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayVerifyHITLRequest0A51A431"
+          }
+        ],
+        "/VaidyaLink-dev/ApiGateway/ErrorResponse/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayErrorResponse77141336"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/AlarmTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringAlarmTopicAF62D4F1"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/AlarmTopic/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringAlarmTopicPolicyCB9CCFB0"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Dashboard/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringDashboard0C3675C6"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Api5xxAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringApi5xxAlarm878C4D0A"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Api4xxAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringApi4xxAlarm220878B6"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda0ErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda0ErrorAlarm5BD9BEFA"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda0ThrottleAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda0ThrottleAlarmDDDD4109"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda1ErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda1ErrorAlarmD89B041C"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda1ThrottleAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda1ThrottleAlarm5E47D737"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda2ErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda2ErrorAlarm37705127"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda2ThrottleAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda2ThrottleAlarmA0347BEA"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda3ErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda3ErrorAlarm391BC00A"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda3ThrottleAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda3ThrottleAlarm336D99C1"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda4ErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda4ErrorAlarmE5227161"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda4ThrottleAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda4ThrottleAlarmC5DD5909"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda5ErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda5ErrorAlarm6DD6E633"
+          }
+        ],
+        "/VaidyaLink-dev/Monitoring/Lambda5ThrottleAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringLambda5ThrottleAlarm7D396C2A"
+          }
+        ],
+        "/VaidyaLink-dev/Events/EventBus/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EventsEventBus8F97E5F3"
+          }
+        ],
+        "/VaidyaLink-dev/Events/DocumentProcessedRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EventsDocumentProcessedRule1874A522"
+          }
+        ],
+        "/VaidyaLink-dev/Events/DocumentProcessedRule/AllowEventRuleVaidyaLinkdevLambdaFunctionsFHIRTransformerEA81AFC9": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EventsDocumentProcessedRuleAllowEventRuleVaidyaLinkdevLambdaFunctionsFHIRTransformerEA81AFC9CED5B7F5"
+          }
+        ],
+        "/VaidyaLink-dev/Events/FHIRTransformedRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EventsFHIRTransformedRuleA151614A"
+          }
+        ],
+        "/VaidyaLink-dev/Events/HITLRequiredRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EventsHITLRequiredRuleB5CB5563"
+          }
+        ],
+        "/VaidyaLink-dev/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+          }
+        ],
+        "/VaidyaLink-dev/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36"
+          }
+        ],
+        "/VaidyaLink-dev/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrail/AuditLogsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailAuditLogsBucketB36ECEE5"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrail/AuditLogsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailAuditLogsBucketPolicyD6051EDF"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrail/CloudTrailLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailCloudTrailLogGroup54B8DDE2"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrail/CloudTrailRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailCloudTrailRole4449D812"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrail/CloudTrailRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailCloudTrailRoleDefaultPolicyDC3380D8"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrail/Trail/LogsRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailLogsRole62B09F98"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrail/Trail/LogsRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailLogsRoleDefaultPolicy01AFF1B8"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrail/Trail/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrail924151B6"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrail/TrailArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailTrailArn2C17FE97"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrail/AuditLogsBucketName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailAuditLogsBucketName5D8750A5"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrail/CloudTrailLogGroupName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailCloudTrailLogGroupName8A3EA383"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/RateLimitTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "RateLimitingRateLimitTable8EC42264"
+            }
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/RateLimitTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingRateLimitTable8EC42264"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/PatientUsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingPatientUsagePlan1826B9C8"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/PatientUsagePlanId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingPatientUsagePlanIdA50BD447"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/HealthcareProviderUsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingHealthcareProviderUsagePlan0A33E18D"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/HealthcareProviderUsagePlanId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingHealthcareProviderUsagePlanIdB22F9827"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/HITLVerifierUsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingHITLVerifierUsagePlan6CF30A93"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/HITLVerifierUsagePlanId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingHITLVerifierUsagePlanId60141547"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/AdminUsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingAdminUsagePlan9C790131"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/AdminUsagePlanId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingAdminUsagePlanId1D6E7F0C"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/RateLimitAuthorizer/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingRateLimitAuthorizerServiceRoleA92D9A52"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/RateLimitAuthorizer/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingRateLimitAuthorizerServiceRoleDefaultPolicyFA9016D7"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/RateLimitAuthorizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingRateLimitAuthorizerBB53C14D"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/RateLimitTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingRateLimitTableName6DE703EB"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimiting/RateLimitAuthorizerArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitingRateLimitAuthorizerArn40D95B87"
+          }
+        ],
+        "/VaidyaLink-dev/StackName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StackName"
+          }
+        ],
+        "/VaidyaLink-dev/Environment": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Environment"
+          }
+        ],
+        "/VaidyaLink-dev/VpcId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcId"
+          }
+        ],
+        "/VaidyaLink-dev/VpcCidr": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcCidr"
+          }
+        ],
+        "/VaidyaLink-dev/PrivateSubnetIds": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PrivateSubnetIds"
+          }
+        ],
+        "/VaidyaLink-dev/IsolatedSubnetIds": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "IsolatedSubnetIds"
+          }
+        ],
+        "/VaidyaLink-dev/LambdaSecurityGroupId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaSecurityGroupId"
+          }
+        ],
+        "/VaidyaLink-dev/AvailabilityZones": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AvailabilityZones"
+          }
+        ],
+        "/VaidyaLink-dev/UserPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolId"
+          }
+        ],
+        "/VaidyaLink-dev/UserPoolClientId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolClientId"
+          }
+        ],
+        "/VaidyaLink-dev/IdentityPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "IdentityPoolId"
+          }
+        ],
+        "/VaidyaLink-dev/EncryptionKeyId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EncryptionKeyId"
+          }
+        ],
+        "/VaidyaLink-dev/ScanJobsTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ScanJobsTableName"
+          }
+        ],
+        "/VaidyaLink-dev/PatientsTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PatientsTableName"
+          }
+        ],
+        "/VaidyaLink-dev/VoiceJobsTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VoiceJobsTableName"
+          }
+        ],
+        "/VaidyaLink-dev/DocumentsBucketName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DocumentsBucketName"
+          }
+        ],
+        "/VaidyaLink-dev/RestApiUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RestApiUrl"
+          }
+        ],
+        "/VaidyaLink-dev/RestApiId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RestApiId"
+          }
+        ],
+        "/VaidyaLink-dev/DocumentProcessingFunctionArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DocumentProcessingFunctionArn"
+          }
+        ],
+        "/VaidyaLink-dev/VoiceProcessingFunctionArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VoiceProcessingFunctionArn"
+          }
+        ],
+        "/VaidyaLink-dev/ClinicalSummarizerFunctionArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ClinicalSummarizerFunctionArn"
+          }
+        ],
+        "/VaidyaLink-dev/FHIRTransformerFunctionArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FHIRTransformerFunctionArn"
+          }
+        ],
+        "/VaidyaLink-dev/ABDMConnectorFunctionArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ABDMConnectorFunctionArn"
+          }
+        ],
+        "/VaidyaLink-dev/HITLHandlerFunctionArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HITLHandlerFunctionArn"
+          }
+        ],
+        "/VaidyaLink-dev/AlarmTopicArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlarmTopicArn"
+          }
+        ],
+        "/VaidyaLink-dev/DashboardName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DashboardName"
+          }
+        ],
+        "/VaidyaLink-dev/EventBusName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EventBusName"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrailArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailArn"
+          }
+        ],
+        "/VaidyaLink-dev/AuditLogsBucketName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AuditLogsBucketName"
+          }
+        ],
+        "/VaidyaLink-dev/CloudTrailLogGroupName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudTrailLogGroupName"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimitTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitTableName"
+          }
+        ],
+        "/VaidyaLink-dev/RateLimitAuthorizerArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RateLimitAuthorizerArn"
+          }
+        ],
+        "/VaidyaLink-dev/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/VaidyaLink-dev/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/VaidyaLink-dev/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "VaidyaLink-dev"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "aws-cdk-lib/feature-flag-report": {
+      "type": "cdk:feature-flag-report",
+      "properties": {
+        "module": "aws-cdk-lib",
+        "flags": {
+          "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
+            "recommendedValue": true,
+            "explanation": "Pass signingProfileName to CfnSigningProfile"
+          },
+          "@aws-cdk/core:newStyleStackSynthesis": {
+            "recommendedValue": true,
+            "explanation": "Switch to new stack synthesis method which enables CI/CD",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/core:stackRelativeExports": {
+            "recommendedValue": true,
+            "explanation": "Name exports based on the construct paths relative to the stack, rather than the global construct path",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "recommendedValue": true,
+            "explanation": "Disable implicit openListener when custom security groups are provided"
+          },
+          "@aws-cdk/aws-rds:lowercaseDbIdentifier": {
+            "recommendedValue": true,
+            "explanation": "Force lowercasing of RDS Cluster names in CDK",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": {
+            "recommendedValue": true,
+            "explanation": "Allow adding/removing multiple UsagePlanKeys independently",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-lambda:recognizeVersionProps": {
+            "recommendedValue": true,
+            "explanation": "Enable this feature flag to opt in to the updated logical id calculation for Lambda Version created using the  `fn.currentVersion`.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-lambda:recognizeLayerVersion": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable this feature flag to opt in to the updated logical id calculation for Lambda Version created using the `fn.currentVersion`."
+          },
+          "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": {
+            "recommendedValue": true,
+            "explanation": "Enable this feature flag to have cloudfront distributions use the security policy TLSv1.2_2021 by default.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/core:checkSecretUsage": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable this flag to make it impossible to accidentally use SecretValues in unsafe locations"
+          },
+          "@aws-cdk/core:target-partitions": {
+            "userValue": [
+              "aws",
+              "aws-cn"
+            ],
+            "recommendedValue": [
+              "aws",
+              "aws-cn"
+            ],
+            "explanation": "What regions to include in lookup tables of environment agnostic stacks"
+          },
+          "@aws-cdk-containers/ecs-service-extensions:enableDefaultLogDriver": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "ECS extensions will automatically add an `awslogs` driver if no logging is specified"
+          },
+          "@aws-cdk/aws-ec2:uniqueImdsv2TemplateName": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable this feature flag to have Launch Templates generated by the `InstanceRequireImdsv2Aspect` use unique names."
+          },
+          "@aws-cdk/aws-ecs:arnFormatIncludesClusterName": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "ARN format used by ECS. In the new ARN format, the cluster name is part of the resource ID."
+          },
+          "@aws-cdk/aws-iam:minimizePolicies": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Minimize IAM policies by combining Statements"
+          },
+          "@aws-cdk/core:validateSnapshotRemovalPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Error on snapshot removal policies on resources that do not support it."
+          },
+          "@aws-cdk/aws-codepipeline:crossAccountKeyAliasStackSafeResourceName": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Generate key aliases that include the stack name"
+          },
+          "@aws-cdk/aws-s3:createDefaultLoggingPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable this feature flag to create an S3 bucket policy by default in cases where an AWS service would automatically create the Policy if one does not exist."
+          },
+          "@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Restrict KMS key policy for encrypted Queues a bit more"
+          },
+          "@aws-cdk/aws-apigateway:disableCloudWatchRole": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Make default CloudWatch Role behavior safe for multiple API Gateways in one environment"
+          },
+          "@aws-cdk/core:enablePartitionLiterals": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Make ARNs concrete if AWS partition is known"
+          },
+          "@aws-cdk/aws-events:eventsTargetQueueSameAccount": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Event Rules may only push to encrypted SQS queues in the same account"
+          },
+          "@aws-cdk/aws-ecs:disableExplicitDeploymentControllerForCircuitBreaker": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Avoid setting the \"ECS\" deployment controller when adding a circuit breaker"
+          },
+          "@aws-cdk/aws-iam:importedRoleStackSafeDefaultPolicyName": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable this feature to create default policy names for imported roles that depend on the stack the role is in."
+          },
+          "@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use S3 Bucket Policy instead of ACLs for Server Access Logging"
+          },
+          "@aws-cdk/aws-route53-patters:useCertificate": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use the official `Certificate` resource instead of `DnsValidatedCertificate`"
+          },
+          "@aws-cdk/customresources:installLatestAwsSdkDefault": {
+            "userValue": false,
+            "recommendedValue": false,
+            "explanation": "Whether to install the latest SDK by default in AwsCustomResource"
+          },
+          "@aws-cdk/aws-rds:databaseProxyUniqueResourceName": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use unique resource name for Database Proxy"
+          },
+          "@aws-cdk/aws-codedeploy:removeAlarmsFromDeploymentGroup": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Remove CloudWatch alarms from deployment group"
+          },
+          "@aws-cdk/aws-apigateway:authorizerChangeDeploymentLogicalId": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include authorizer configuration in the calculation of the API deployment logical ID."
+          },
+          "@aws-cdk/aws-ec2:launchTemplateDefaultUserData": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Define user data for a launch template by default when a machine image is provided."
+          },
+          "@aws-cdk/aws-secretsmanager:useAttachedSecretResourcePolicyForSecretTargetAttachments": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "SecretTargetAttachments uses the ResourcePolicy of the attached Secret."
+          },
+          "@aws-cdk/aws-redshift:columnId": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Whether to use an ID to track Redshift column changes"
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:enableEmrServicePolicyV2": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enable AmazonEMRServicePolicy_v2 managed policies"
+          },
+          "@aws-cdk/aws-ec2:restrictDefaultSecurityGroup": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Restrict access to the VPC default security group"
+          },
+          "@aws-cdk/aws-apigateway:requestValidatorUniqueId": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Generate a unique id for each RequestValidator added to a method"
+          },
+          "@aws-cdk/aws-kms:aliasNameRef": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "KMS Alias name and keyArn will have implicit reference to KMS Key"
+          },
+          "@aws-cdk/aws-kms:applyImportedAliasPermissionsToPrincipal": {
+            "recommendedValue": true,
+            "explanation": "Enable grant methods on Aliases imported by name to use kms:ResourceAliases condition"
+          },
+          "@aws-cdk/aws-autoscaling:generateLaunchTemplateInsteadOfLaunchConfig": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Generate a launch template when creating an AutoScalingGroup"
+          },
+          "@aws-cdk/core:includePrefixInUniqueNameGeneration": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include the stack prefix in the stack name generation process"
+          },
+          "@aws-cdk/aws-efs:denyAnonymousAccess": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "EFS denies anonymous clients accesses"
+          },
+          "@aws-cdk/aws-opensearchservice:enableOpensearchMultiAzWithStandby": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enables support for Multi-AZ with Standby deployment for opensearch domains"
+          },
+          "@aws-cdk/aws-lambda-nodejs:useLatestRuntimeVersion": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enables aws-lambda-nodejs.Function to use the latest available NodeJs runtime as the default"
+          },
+          "@aws-cdk/aws-efs:mountTargetOrderInsensitiveLogicalId": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, mount targets will have a stable logicalId that is linked to the associated subnet."
+          },
+          "@aws-cdk/aws-rds:auroraClusterChangeScopeOfInstanceParameterGroupWithEachParameters": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, a scope of InstanceParameterGroup for AuroraClusterInstance with each parameters will change."
+          },
+          "@aws-cdk/aws-appsync:useArnForSourceApiAssociationIdentifier": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, will always use the arn for identifiers for CfnSourceApiAssociation in the GraphqlApi construct rather than id."
+          },
+          "@aws-cdk/aws-rds:preventRenderingDeprecatedCredentials": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, creating an RDS database cluster from a snapshot will only render credentials for snapshot credentials."
+          },
+          "@aws-cdk/aws-codepipeline-actions:useNewDefaultBranchForCodeCommitSource": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, the CodeCommit source action is using the default branch name 'main'."
+          },
+          "@aws-cdk/aws-cloudwatch-actions:changeLambdaPermissionLogicalIdForLambdaAction": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, the logical ID of a Lambda permission for a Lambda action includes an alarm ID."
+          },
+          "@aws-cdk/aws-codepipeline:crossAccountKeysDefaultValueToFalse": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enables Pipeline to set the default value for crossAccountKeys to false."
+          },
+          "@aws-cdk/aws-codepipeline:defaultPipelineTypeToV2": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Enables Pipeline to set the default pipeline type to V2."
+          },
+          "@aws-cdk/aws-kms:reduceCrossAccountRegionPolicyScope": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, IAM Policy created from KMS key grant will reduce the resource scope to this key only."
+          },
+          "@aws-cdk/pipelines:reduceAssetRoleTrustScope": {
+            "recommendedValue": true,
+            "explanation": "Remove the root account principal from PipelineAssetsFileRole trust policy",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-eks:nodegroupNameAttribute": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
+          },
+          "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "recommendedValue": true,
+            "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
+          },
+          "@aws-cdk/aws-ec2:ebsDefaultGp3Volume": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, the default volume type of the EBS volume will be GP3"
+          },
+          "@aws-cdk/aws-ecs:removeDefaultDeploymentAlarm": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, remove default deployment alarm settings"
+          },
+          "@aws-cdk/custom-resources:logApiResponseDataPropertyTrueDefault": {
+            "userValue": false,
+            "recommendedValue": false,
+            "explanation": "When enabled, the custom resource used for `AwsCustomResource` will configure the `logApiResponseData` property as true by default"
+          },
+          "@aws-cdk/aws-s3:keepNotificationInImportedBucket": {
+            "userValue": false,
+            "recommendedValue": false,
+            "explanation": "When enabled, Adding notifications to a bucket in the current stack will not remove notification from imported stack."
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:useNewS3UriParametersForBedrockInvokeModelTask": {
+            "recommendedValue": true,
+            "explanation": "When enabled, use new props for S3 URI field in task definition of state machine for bedrock invoke model.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/core:explicitStackTags": {
+            "recommendedValue": true,
+            "explanation": "When enabled, stack tags need to be assigned explicitly on a Stack."
+          },
+          "@aws-cdk/aws-ecs:reduceEc2FargateCloudWatchPermissions": {
+            "recommendedValue": true,
+            "explanation": "When enabled, we will only grant the necessary permissions when users specify cloudwatch log group through logConfiguration"
+          },
+          "@aws-cdk/aws-dynamodb:resourcePolicyPerReplica": {
+            "recommendedValue": true,
+            "explanation": "When enabled will allow you to specify a resource policy per replica, and not copy the source table policy to all replicas"
+          },
+          "@aws-cdk/aws-ec2:ec2SumTImeoutEnabled": {
+            "recommendedValue": true,
+            "explanation": "When enabled, initOptions.timeout and resourceSignalTimeout values will be summed together."
+          },
+          "@aws-cdk/aws-appsync:appSyncGraphQLAPIScopeLambdaPermission": {
+            "recommendedValue": true,
+            "explanation": "When enabled, a Lambda authorizer Permission created when using GraphqlApi will be properly scoped with a SourceArn."
+          },
+          "@aws-cdk/aws-rds:setCorrectValueForDatabaseInstanceReadReplicaInstanceResourceId": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the value of property `instanceResourceId` in construct `DatabaseInstanceReadReplica` will be set to the correct value which is `DbiResourceId` instead of currently `DbInstanceArn`"
+          },
+          "@aws-cdk/core:cfnIncludeRejectComplexResourceUpdateCreatePolicyIntrinsics": {
+            "recommendedValue": true,
+            "explanation": "When enabled, CFN templates added with `cfn-include` will error if the template contains Resource Update or Create policies with CFN Intrinsics that include non-primitive values."
+          },
+          "@aws-cdk/aws-lambda-nodejs:sdkV3ExcludeSmithyPackages": {
+            "recommendedValue": true,
+            "explanation": "When enabled, both `@aws-sdk` and `@smithy` packages will be excluded from the Lambda Node.js 18.x runtime to prevent version mismatches in bundled applications."
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:fixRunEcsTaskPolicy": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the resource of IAM Run Ecs policy generated by SFN EcsRunTask will reference the definition, instead of constructing ARN."
+          },
+          "@aws-cdk/aws-ec2:bastionHostUseAmazonLinux2023ByDefault": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the BastionHost construct will use the latest Amazon Linux 2023 AMI, instead of Amazon Linux 2."
+          },
+          "@aws-cdk/core:aspectStabilization": {
+            "recommendedValue": true,
+            "explanation": "When enabled, a stabilization loop will be run when invoking Aspects during synthesis.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-route53-targets:userPoolDomainNameMethodWithoutCustomResource": {
+            "recommendedValue": true,
+            "explanation": "When enabled, use a new method for DNS Name of user pool domain target without creating a custom resource."
+          },
+          "@aws-cdk/aws-elasticloadbalancingV2:albDualstackWithoutPublicIpv4SecurityGroupRulesDefault": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the default security group ingress rules will allow IPv6 ingress from anywhere"
+          },
+          "@aws-cdk/aws-iam:oidcRejectUnauthorizedConnections": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the default behaviour of OIDC provider will reject unauthorized connections"
+          },
+          "@aws-cdk/core:enableAdditionalMetadataCollection": {
+            "recommendedValue": true,
+            "explanation": "When enabled, CDK will expand the scope of usage data collected to better inform CDK development and improve communication for security concerns and emerging issues."
+          },
+          "@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy": {
+            "recommendedValue": false,
+            "explanation": "[Deprecated] When enabled, Lambda will create new inline policies with AddToRolePolicy instead of adding to the Default Policy Statement"
+          },
+          "@aws-cdk/aws-s3:setUniqueReplicationRoleName": {
+            "recommendedValue": true,
+            "explanation": "When enabled, CDK will automatically generate a unique role name that is used for s3 object replication."
+          },
+          "@aws-cdk/pipelines:reduceStageRoleTrustScope": {
+            "recommendedValue": true,
+            "explanation": "Remove the root account principal from Stage addActions trust policy",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-events:requireEventBusPolicySid": {
+            "recommendedValue": true,
+            "explanation": "When enabled, grantPutEventsTo() will use resource policies with Statement IDs for service principals."
+          },
+          "@aws-cdk/core:aspectPrioritiesMutating": {
+            "recommendedValue": true,
+            "explanation": "When set to true, Aspects added by the construct library on your behalf will be given a priority of MUTATING."
+          },
+          "@aws-cdk/aws-dynamodb:retainTableReplica": {
+            "recommendedValue": true,
+            "explanation": "When enabled, table replica will be default to the removal policy of source table unless specified otherwise."
+          },
+          "@aws-cdk/cognito:logUserPoolClientSecretValue": {
+            "recommendedValue": false,
+            "explanation": "When disabled, the value of the user pool client secret will not be logged in the custom resource lambda function logs."
+          },
+          "@aws-cdk/pipelines:reduceCrossAccountActionRoleTrustScope": {
+            "recommendedValue": true,
+            "explanation": "When enabled, scopes down the trust policy for the cross-account action role",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-stepfunctions:useDistributedMapResultWriterV2": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the resultWriterV2 property of DistributedMap will be used insted of resultWriter"
+          },
+          "@aws-cdk/s3-notifications:addS3TrustKeyPolicyForSnsSubscriptions": {
+            "recommendedValue": true,
+            "explanation": "Add an S3 trust policy to a KMS key resource policy for SNS subscriptions."
+          },
+          "@aws-cdk/aws-ec2:requirePrivateSubnetsForEgressOnlyInternetGateway": {
+            "recommendedValue": true,
+            "explanation": "When enabled, the EgressOnlyGateway resource is only created if private subnets are defined in the dual-stack VPC."
+          },
+          "@aws-cdk/aws-ec2-alpha:useResourceIdForVpcV2Migration": {
+            "recommendedValue": false,
+            "explanation": "When enabled, use resource IDs for VPC V2 migration"
+          },
+          "@aws-cdk/aws-s3:publicAccessBlockedByDefault": {
+            "recommendedValue": true,
+            "explanation": "When enabled, setting any combination of options for BlockPublicAccess will automatically set true for any options not defined."
+          },
+          "@aws-cdk/aws-lambda:useCdkManagedLogGroup": {
+            "recommendedValue": true,
+            "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "recommendedValue": true,
+            "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:httpInvokeDynamicJsonPathEndpoint": {
+            "recommendedValue": true,
+            "explanation": "When enabled, allows using a dynamic apiEndpoint with JSONPath format in HttpInvoke tasks.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "recommendedValue": true,
+            "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
+          },
+          "@aws-cdk/aws-route53-patterns:useDistribution": {
+            "recommendedValue": true,
+            "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
+          },
+          "@aws-cdk/core:automaticL1Traits": {
+            "recommendedValue": true,
+            "explanation": "Automatically use the default L1 traits for L1 constructs`",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "minimumCliVersion": "2.1105.0"
+}

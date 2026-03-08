@@ -1,0 +1,243 @@
+version: '3.8'
+
+services:
+  # =============================================================================
+  # Frontend - Next.js Application
+  # =============================================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: vaidyalink-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_ENDPOINT=http://localhost:4000
+      - NEXT_PUBLIC_WS_ENDPOINT=ws://localhost:4001
+10-4559:4510-4559"  # External services port range
+    environment:
+      - SERVICES=s3,dynamodb,lambda,apigateway,cognito-idp,kms,secretsmanager,sns,sqs,events,logs
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - LAMBDA_EXECUTOR=docker-reuse
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_DEFAULT_REGION=ap-south-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    volumes:
+      - ./localstack-data:/tmp/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./infrastructure/localstack-init:/docker-entrypoint-initaws.d
+    networks:
+      - vaidyalink-network
+
+  # =============================================================================
+  # DynamoDB Admin UI
+  # =============================================================================
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin:latest
+    container_name: vaidyalink-dynamodb-admin
+    ports:
+      - "8001:8001"
+    environment:
+      - DYNAMO_ENDPOINT=http://localstack:4566
+      - AWS_REGION=ap-south-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    networks:
+      - vaidyalink-network
+    depends_on:
+      - localstack
+
+  # =============================================================================
+  # Document Processing Lambda (Python)
+  # =============================================================================
+  lambda-document-processing:
+    build:
+      context: ./backend/document-processing
+      dockerfile: Dockerfile.dev
+    container_name: vaidyalink-lambda-document-processing
+    ports:
+      - "9001:8080"
+    volumes:
+      - ./backend/document-processing:/var/task
+    environment:
+      - AWS_REGION=ap-south-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - ENVIRONMENT=local
+      - LOG_LEVEL=debug
+      - S3_BUCKET=vaidyalink-local-documents
+      - BEDROCK_MODEL_ID=anthropic.claude-3-5-sonnet-20241022-v2:0
+      - CONFIDENCE_THRESHOLD=0.8
+    networks:
+      - vaidyalink-network
+    depends_on:
+      - localstack
+
+  # =============================================================================
+  # Voice Processing Lambda (Node.js)
+  # =============================================================================
+  lambda-voice-processing:
+    build:
+      context: ./backend/voice-processing
+      dockerfile: Dockerfile.dev
+    container_name: vaidyalink-lambda-voice-processing
+    ports:
+      - "9002:8080"
+    volumes:
+      - ./backend/voice-processing:/var/task
+      - /var/task/node_modules
+    environment:
+      - AWS_REGION=ap-south-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - ENVIRONMENT=local
+      - LOG_LEVEL=debug
+      - S3_BUCKET=vaidyalink-local-audio
+      - BHASHINI_API_KEY=test-key
+    networks:
+      - vaidyalink-network
+    depends_on:
+      - localstack
+
+  # =============================================================================
+  # Clinical Summarizer Lambda (Python)
+  # =============================================================================
+  lambda-clinical-summarizer:
+    build:
+      context: ./backend/clinical-summarizer
+      dockerfile: Dockerfile.dev
+    container_name: vaidyalink-lambda-clinical-summarizer
+    ports:
+      - "9003:8080"
+    volumes:
+      - ./backend/clinical-summarizer:/var/task
+    environment:
+      - AWS_REGION=ap-south-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - ENVIRONMENT=local
+      - LOG_LEVEL=debug
+      - BEDROCK_MODEL_ID=anthropic.claude-3-5-sonnet-20241022-v2:0
+    networks:
+      - vaidyalink-network
+    depends_on:
+      - localstack
+
+  # =============================================================================
+  # FHIR Transformer Lambda (Python)
+  # =============================================================================
+  lambda-fhir-transformer:
+    build:
+      context: ./backend/fhir-transformer
+      dockerfile: Dockerfile.dev
+    container_name: vaidyalink-lambda-fhir-transformer
+    ports:
+      - "9004:8080"
+    volumes:
+      - ./backend/fhir-transformer:/var/task
+    environment:
+      - AWS_REGION=ap-south-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - ENVIRONMENT=local
+      - LOG_LEVEL=debug
+    networks:
+      - vaidyalink-network
+    depends_on:
+      - localstack
+
+  # =============================================================================
+  # ABDM Connector Lambda (Node.js)
+  # =============================================================================
+  lambda-abdm-connector:
+    build:
+      context: ./backend/abdm-connector
+      dockerfile: Dockerfile.dev
+    container_name: vaidyalink-lambda-abdm-connector
+    ports:
+      - "9005:8080"
+    volumes:
+      - ./backend/abdm-connector:/var/task
+      - /var/task/node_modules
+    environment:
+      - AWS_REGION=ap-south-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - ENVIRONMENT=local
+      - LOG_LEVEL=debug
+      - ABDM_BASE_URL=https://dev.abdm.gov.in
+    networks:
+      - vaidyalink-network
+    depends_on:
+      - localstack
+
+  # =============================================================================
+  # HITL Handler Lambda (Node.js)
+  # =============================================================================
+  lambda-hitl-handler:
+    build:
+      context: ./backend/hitl-handler
+      dockerfile: Dockerfile.dev
+    container_name: vaidyalink-lambda-hitl-handler
+    ports:
+      - "9006:8080"
+    volumes:
+      - ./backend/hitl-handler:/var/task
+      - /var/task/node_modules
+    environment:
+      - AWS_REGION=ap-south-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - ENVIRONMENT=local
+      - LOG_LEVEL=debug
+    networks:
+      - vaidyalink-network
+    depends_on:
+      - localstack
+
+  # =============================================================================
+  # Redis - Caching Layer
+  # =============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: vaidyalink-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - vaidyalink-network
+
+  # =============================================================================
+  # Mailhog - Email Testing
+  # =============================================================================
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: vaidyalink-mailhog
+    ports:
+      - "1025:1025"  # SMTP server
+      - "8025:8025"  # Web UI
+    networks:
+      - vaidyalink-network
+
+networks:
+  vaidyalink-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+  localstack-data:

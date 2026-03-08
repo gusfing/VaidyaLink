@@ -1,0 +1,43 @@
+{
+  "name": "vaidyalink",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-powered healthcare record digitization platform for India",
+  "workspaces": [
+    "frontend",
+    "backend/*",
+    "infrastructure"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter frontend dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:python": "black backend/",
+    "lint:python": "flake8 backend/",
+    "prepare": "husky",
+    "deploy:dev": "pnpm --filter infrastructure deploy:dev",
+    "deploy:staging": "pnpm --filter infrastructure deploy:staging",
+    "deploy:prod": "pnpm --filter infrastructure deploy:prod"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "typescript": "^5.3.0",
+    "typescript-eslint": "^8.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

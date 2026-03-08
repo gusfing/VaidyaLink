@@ -1,0 +1,23 @@
+{
+  "name": "@vaidyalink/dynamodb-helpers",
+  "version": "1.0.0",
+  "description": "Optimized DynamoDB query helpers for VaidyaLink",
+  "main": "query-helpers.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "dynamodb",
+    "aws",
+    "query",
+    "optimization"
+  ],
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.450.0",
+    "@aws-sdk/lib-dynamodb": "^3.450.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@aws-sdk/client-dynamodb": "^3.450.0"
+  }
+}

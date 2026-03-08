@@ -1,0 +1,20 @@
+{
+  "name": "@vaidyalink/request-signing",
+  "version": "1.0.0",
+  "description": "Request signing utilities for VaidyaLink sensitive operations",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "request-signing",
+    "hmac",
+    "security",
+    "vaidyalink"
+  ],
+  "author": "VaidyaLink Team",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

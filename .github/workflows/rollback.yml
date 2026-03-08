@@ -1,0 +1,314 @@
+name: Rollback Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to rollback'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      component:
+        description: 'Component to rollback'
+        required: true
+        type: choice
+        options:
+          - all
+          - infrastructure
+          - lambdas
+          - frontend
+      version:
+        description: 'Version/commit to rollback to (leave empty for previous version)'
+        required: false
+        type: string
+
+env:
+  AWS_REGION: ap-south-1
+
+jobs:
+  # =============================================================================
+  # Rollback Confirmation
+  # =============================================================================
+  confirm-rollback:
+    name: Confirm Rollback
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}-rollback-approval
+
+    steps:
+      - name: Display rollback information
+        run: |
+          echo "🔄 Rollback Request"
+          echo "Environment: ${{ inputs.environment }}"
+          echo "Component: ${{ inputs.component }}"
+          echo "Target Version: ${{ inputs.version || 'previous version' }}"
+          echo ""
+          echo "⚠️  This action will rollback the deployment."
+          echo "Please confirm in the GitHub UI to proceed."
+
+  # =============================================================================
+  # Rollback Lambda Functions
+  # =============================================================================
+  rollback-lambdas:
+    name: Rollback Lambda Functions
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [confirm-rollback]
+    if: ${{ inputs.component == 'all' || inputs.component == 'lambdas' }}
+
+    strategy:
+      matrix:
+        service:
+          - document-processing
+          - voice-processing
+          - clinical-summarizer
+          - fhir-transformer
+          - abdm-connector
+          - hitl-handler
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ inputs.environment == 'production' && secrets.AWS_ACCESS_KEY_ID_PRODUCTION || secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ inputs.environment == 'production' && secrets.AWS_SECRET_ACCESS_KEY_PRODUCTION || secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ inputs.environment == 'production' && secrets.AWS_DEPLOY_ROLE_ARN_PRODUCTION || secrets.AWS_DEPLOY_ROLE_ARN_STAGING }}
+          role-duration-seconds: 1800
+
+      - name: Get current Lambda version
+        id: current-version
+        run: |
+          CURRENT=$(aws lambda get-alias \
+            --function-name vaidyalink-${{ inputs.environment }}-${{ matrix.service }} \
+            --name live \
+            --query 'FunctionVersion' --output text)
+          echo "current_version=$CURRENT" >> $GITHUB_OUTPUT
+          echo "Current version: $CURRENT"
+
+      - name: Determine rollback version
+        id: rollback-version
+        run: |
+          if [ -n "${{ inputs.version }}" ]; then
+            ROLLBACK_VERSION="${{ inputs.version }}"
+          else
+            # Get previous version
+            ROLLBACK_VERSION=$(aws lambda list-versions-by-function \
+              --function-name vaidyalink-${{ inputs.environment }}-${{ matrix.service }} \
+              --query 'Versions[-2].Version' --output text)
+          fi
+          echo "rollback_version=$ROLLBACK_VERSI
+rrent_version }} to ${{ steps.rollback-version.outputs.rollback_version }}"
+
+      - name: Verify rollback
+        run: |
+          NEW_VERSION=$(aws lambda get-alias \
+            --function-name vaidyalink-${{ inputs.environment }}-${{ matrix.service }} \
+            --name live \
+            --query 'FunctionVersion' --output text)
+
+          if [ "$NEW_VERSION" != "${{ steps.rollback-version.outputs.rollback_version }}" ]; then
+            echo "❌ Rollback verification failed"
+            exit 1
+          fi
+          echo "✅ Rollback verified"
+
+  # =============================================================================
+  # Rollback Infrastructure
+  # =============================================================================
+  rollback-infrastructure:
+    name: Rollback Infrastructure
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [confirm-rollback]
+    if: ${{ inputs.component == 'all' || inputs.component == 'infrastructure' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.version || github.event.before }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ inputs.environment == 'production' && secrets.AWS_ACCESS_KEY_ID_PRODUCTION || secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ inputs.environment == 'production' && secrets.AWS_SECRET_ACCESS_KEY_PRODUCTION || secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ inputs.environment == 'production' && secrets.AWS_DEPLOY_ROLE_ARN_PRODUCTION || secrets.AWS_DEPLOY_ROLE_ARN_STAGING }}
+          role-duration-seconds: 3600
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build infrastructure
+        run: |
+          cd infrastructure
+          pnpm build
+
+      - name: CDK Diff
+        run: |
+          cd infrastructure
+          npx cdk diff --context environment=${{ inputs.environment }}
+
+      - name: Rollback CDK stacks
+        run: |
+          cd infrastructure
+          npx cdk deploy --all \
+            --context environment=${{ inputs.environment }} \
+            --require-approval never
+
+  # =============================================================================
+  # Rollback Frontend
+  # =============================================================================
+  rollback-frontend:
+    name: Rollback Frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [confirm-rollback]
+    if: ${{ inputs.component == 'all' || inputs.component == 'frontend' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.version || github.event.before }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          pnpm build
+        env:
+          NEXT_PUBLIC_API_ENDPOINT: ${{ inputs.environment == 'production' && secrets.PRODUCTION_API_ENDPOINT || secrets.STAGING_API_ENDPOINT }}
+          NEXT_PUBLIC_WS_ENDPOINT: ${{ inputs.environment == 'production' && secrets.PRODUCTION_WS_ENDPOINT || secrets.STAGING_WS_ENDPOINT }}
+          NEXT_PUBLIC_ENVIRONMENT: ${{ inputs.environment }}
+          NODE_ENV: production
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ inputs.environment == 'production' && secrets.VERCEL_PROJECT_ID_PRODUCTION || secrets.VERCEL_PROJECT_ID_STAGING }}
+          working-directory: ./frontend
+          vercel-args: '--prod'
+
+  # =============================================================================
+  # Post-rollback Validation
+  # =============================================================================
+  validate-rollback:
+    name: Validate Rollback
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [rollback-lambdas, rollback-infrastructure, rollback-frontend]
+    if: always()
+
+    steps:
+      - name: Test API health
+        run: |
+          API_URL="${{ inputs.environment == 'production' && secrets.PRODUCTION_API_ENDPOINT || secrets.STAGING_API_ENDPOINT }}"
+          response=$(curl -s -o /dev/null -w "%{http_code}" $API_URL/health)
+
+          if [ $response -ne 200 ]; then
+            echo "❌ API health check failed with status $response"
+            exit 1
+          fi
+          echo "✅ API health check passed"
+
+      - name: Test frontend
+        run: |
+          FRONTEND_URL="${{ inputs.environment == 'production' && 'https://vaidyalink.com' || 'https://staging.vaidyalink.com' }}"
+          response=$(curl -s -o /dev/null -w "%{http_code}" $FRONTEND_URL)
+
+          if [ $response -ne 200 ]; then
+            echo "❌ Frontend health check failed with status $response"
+            exit 1
+          fi
+          echo "✅ Frontend health check passed"
+
+  # =============================================================================
+  # Notification
+  # =============================================================================
+  notify:
+    name: Send Rollback Notification
+    runs-on: ubuntu-latest
+    needs: [rollback-lambdas, rollback-infrastructure, rollback-frontend, validate-rollback]
+    if: always()
+
+    steps:
+      - name: Determine rollback status
+        id: status
+        run: |
+          if [[ "${{ needs.validate-rollback.result }}" == "success" ]]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "message=✅ Rollback completed successfully" >> $GITHUB_OUTPUT
+            echo "color=good" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "message=❌ Rollback failed or incomplete" >> $GITHUB_OUTPUT
+            echo "color=danger" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v1
+        if: always()
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          payload: |
+            {
+              "text": "${{ steps.status.outputs.message }}",
+              "attachments": [
+                {
+                  "color": "${{ steps.status.outputs.color }}",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "*Deployment Rollback*\n${{ steps.status.outputs.message }}\n\n*Environment:* ${{ inputs.environment }}\n*Component:* ${{ inputs.component }}\n*Target Version:* ${{ inputs.version || 'previous version' }}\n*Initiated by:* ${{ github.actor }}"
+                      }
+                    },
+                    {
+                      "type": "actions",
+                      "elements": [
+                        {
+                          "type": "button",
+                          "text": {
+                            "type": "plain_text",
+                            "text": "View Workflow"
+                          },
+                          "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }

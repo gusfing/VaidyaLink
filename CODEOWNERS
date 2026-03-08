@@ -1,0 +1,285 @@
+# VaidyaLink Code Owners
+
+#
+
+# This file defines code ownership for automatic review requests.
+
+# When a pull request is created, GitHub will automatically request
+
+# reviews from the owners of the modified files.
+
+#
+
+# Format: <file-pattern> <owner1> <owner2> ...
+
+# Use GitHub usernames with @ prefix or team names with @org/team-name
+
+#
+
+# Learn more: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# =============================================================================
+
+# Default Owners
+
+# =============================================================================
+
+# These owners will be requested for review on all PRs unless a more specific
+
+# rule matches the changed files.
+
+- @gusfing
+
+# =============================================================================
+
+# Frontend Application
+
+# =============================================================================
+
+# Next.js application, UI components, and client-side logic
+
+/frontend/ @gusfing
+/frontend/app/ @gusfing
+/frontend/components/ @gusfing
+/frontend/lib/ @gusfing
+
+# =============================================================================
+
+# Backend Services
+
+# =============================================================================
+
+# AWS Lambda functions and backend logic
+
+/backend/ @gusfing
+
+# Document Processing Lambda (Python)
+
+/backend/document-processing/ @gusfing
+
+# Voice Processing Lambda (Node.js)
+
+/backend/voice-processing/ @gusfing
+
+# Clinical Summarizer Lambda (Python)
+
+/backend/clinical-summarizer/ @gusfing
+
+# FHIR Transformer Lambda (Python)
+
+/backend/fhir-transformer/ @gusfing
+
+# ABDM Connector Lambda (Node.js)
+
+/backend/abdm-connector/ @gusfing
+
+# HITL Handler Lambda (Node.js)
+
+/backend/hitl-handler/ @gusfing
+
+# Shared utilities
+
+/backend/shared/ @gusfing
+
+# =============================================================================
+
+# Infrastructure as Code
+
+# =============================================================================
+
+# AWS CDK infrastructure definitions
+
+/infrastructure/ @gusfing
+/infrastructure/lib/ @gusfing
+/infrastructure/config/ @gusfing
+
+# =============================================================================
+
+# Security-Sensitive Files
+
+# =============================================================================
+
+# Files that require security team review
+
+# Authentication and authorization
+
+/backend/_/auth_ @gusfing
+/frontend/lib/auth\* @gusfing
+
+# Environment configuration templates
+
+_.env.example @gusfing
+.env._ @gusfing
+
+# Security configurations
+
+/infrastructure/lib/security/ @gusfing
+
+# GitHub Actions workflows (CI/CD security)
+
+/.github/workflows/ @gusfing
+
+# =============================================================================
+
+# Healthcare Compliance
+
+# =============================================================================
+
+# Files requiring healthcare compliance review
+
+# ABDM integration (requires compliance officer review)
+
+/backend/abdm-connector/ @gusfing
+
+# FHIR transformation (requires healthcare standards review)
+
+/backend/fhir-transformer/ @gusfing
+
+# PHI handling
+
+/backend/_/phi_ @gusfing
+/backend/_/patient_ @gusfing
+
+# =============================================================================
+
+# Documentation
+
+# =============================================================================
+
+# Documentation files
+
+/docs/ @gusfing
+\*.md @gusfing
+/docs/api/ @gusfing
+
+# Specific important docs
+
+README.md @gusfing
+CONTRIBUTING.md @gusfing
+CODE_OF_CONDUCT.md @gusfing
+SECURITY.md @gusfing
+
+# =============================================================================
+
+# Configuration Files
+
+# =============================================================================
+
+# Project configuration requiring careful review
+
+# Package management
+
+package.json @gusfing
+pnpm-workspace.yaml @gusfing
+pnpm-lock.yaml @gusfing
+
+# TypeScript configuration
+
+tsconfig.json @gusfing
+\*/tsconfig.json @gusfing
+
+# Linting and formatting
+
+eslint.config.\* @gusfing
+.prettierrc @gusfing
+.prettierignore @gusfing
+
+# Python configuration
+
+pyproject.toml @gusfing
+requirements.txt @gusfing
+\*/requirements.txt @gusfing
+
+# Git configuration
+
+.gitignore @gusfing
+.gitattributes @gusfing
+
+# =============================================================================
+
+# CI/CD and DevOps
+
+# =============================================================================
+
+# Continuous integration and deployment
+
+/.github/ @gusfing
+/.github/workflows/ @gusfing
+/scripts/ @gusfing
+
+# Husky hooks
+
+/.husky/ @gusfing
+
+# =============================================================================
+
+# Build and Deployment
+
+# =============================================================================
+
+# Build configuration and deployment scripts
+
+# Next.js configuration
+
+/frontend/next.config.\* @gusfing
+
+# CDK configuration
+
+/infrastructure/cdk.json @gusfing
+
+# Docker files (if added in future)
+
+Dockerfile @gusfing
+docker-compose.yml @gusfing
+.dockerignore @gusfing
+
+# =============================================================================
+
+# Testing
+
+# =============================================================================
+
+# Test files and configuration
+
+**/\*.test.ts @gusfing
+**/_.test.tsx @gusfing
+\*\*/_.test.js @gusfing
+**/\*.test.py @gusfing
+**/_.spec.ts @gusfing
+\*\*/_.spec.tsx @gusfing
+**/\*.spec.js @gusfing
+**/\*.spec.py @gusfing
+
+/frontend/**tests**/ @gusfing
+/backend/\*/tests/ @gusfing
+
+# Test configuration
+
+jest.config._ @gusfing
+pytest.ini @gusfing
+vitest.config._ @gusfing
+
+# =============================================================================
+
+# Database and Data Models
+
+# =============================================================================
+
+# Database schemas and data models
+
+/infrastructure/lib/database/ @gusfing
+/backend/_/models/ @gusfing
+/backend/_/schemas/ @gusfing
+
+# =============================================================================
+
+# API Definitions
+
+# =============================================================================
+
+# API contracts and OpenAPI specifications
+
+/docs/api/ @gusfing
+openapi.yaml @gusfing
+swagger.json @gusfing
+/backend/\*/api/ @gusfing

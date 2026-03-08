@@ -1,0 +1,345 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+    inputs:
+      skip_tests:
+        description: 'Skip tests before deployment'
+        required: false
+        type: boolean
+        default: false
+
+# Prevent concurrent deployments
+concurrency:
+  group: staging-deployment
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: ap-south-1
+  ENVIRONMENT: staging
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # =============================================================================
+  # Pre-deployment Tests
+  # =============================================================================
+  pre-deploy-tests:
+    name: Pre-deployment Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: ${{ !inputs.skip_tests }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run linting
+        run: pnpm lint
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Build verification
+        run: pnpm build
+
+  # =============================================================================
+  # Deploy Infrastructure
+  # =============================================================================
+  deploy-infrastructure:
+    name: Deploy Infrastructure
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [pre-deploy-tests]
+    if: always() && (needs.pre-deploy-tests.result == 'success' || needs.pre-deploy-tests.result == 'skipped')
+
+    outputs:
+      api_endpoint: ${{ steps.stack-outputs.outputs.api_endpoint }}
+      websocket_endpoint: ${{ steps.stack-outputs.outputs.websocket_endpoint }}
+
+    steps:
+      - name: Checkout code
+        uses
+Y_STAGING }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN_STAGING }}
+          role-duration-seconds: 3600
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build infrastructure
+        run: |
+          cd infrastructure
+          pnpm build
+
+      - name: CDK Bootstrap (if needed)
+        run: |
+          cd infrastructure
+          npx cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID_STAGING }}/${{ env.AWS_REGION }}
+        continue-on-error: true
+
+      - name: CDK Diff
+        run: |
+          cd infrastructure
+          npx cdk diff --context environment=staging
+        continue-on-error: true
+
+      - name: Deploy CDK stacks
+        run: |
+          cd infrastructure
+          npx cdk deploy --all \
+            --context environment=staging \
+            --require-approval never \
+            --outputs-file cdk-outputs.json
+
+      - name: Extract stack outputs
+        id: stack-outputs
+        run: |
+          cd infrastructure
+          API_ENDPOINT=$(jq -r '.VaidyaLinkApiStack.ApiEndpoint' cdk-outputs.json)
+          WS_ENDPOINT=$(jq -r '.VaidyaLinkApiStack.WebSocketEndpoint' cdk-outputs.json)
+          echo "api_endpoint=$API_ENDPOINT" >> $GITHUB_OUTPUT
+          echo "websocket_endpoint=$WS_ENDPOINT" >> $GITHUB_OUTPUT
+
+      - name: Upload CDK outputs
+        uses: actions/upload-artifact@v3
+        with:
+          name: cdk-outputs-staging
+          path: infrastructure/cdk-outputs.json
+          retention-days: 30
+
+  # =============================================================================
+  # Deploy Lambda Functions
+  # =============================================================================
+  deploy-lambdas:
+    name: Deploy Lambda Functions
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [deploy-infrastructure]
+
+    strategy:
+      matrix:
+        service:
+          - document-processing
+          - voice-processing
+          - clinical-summarizer
+          - fhir-transformer
+          - abdm-connector
+          - hitl-handler
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN_STAGING }}
+          role-duration-seconds: 1800
+
+      - name: Setup Python (for Python services)
+        if: contains(fromJSON('["document-processing", "clinical-summarizer", "fhir-transformer"]'), matrix.service)
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup Node.js (for Node services)
+        if: contains(fromJSON('["voice-processing", "abdm-connector", "hitl-handler"]'), matrix.service)
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Package Python Lambda
+        if: contains(fromJSON('["document-processing", "clinical-summarizer", "fhir-transformer"]'), matrix.service)
+        run: |
+          cd backend/${{ matrix.service }}
+          pip install -r requirements.txt -t package/
+          cp -r *.py package/
+          cd package
+          zip -r ../function.zip .
+
+      - name: Package Node Lambda
+        if: contains(fromJSON('["voice-processing", "abdm-connector", "hitl-handler"]'), matrix.service)
+        run: |
+          cd backend/${{ matrix.service }}
+          npm ci --production
+          zip -r function.zip . -x "*.git*" "*.md" "tests/*"
+
+      - name: Update Lambda function
+        run: |
+          cd backend/${{ matrix.service }}
+          aws lambda update-function-code \
+            --function-name vaidyalink-staging-${{ matrix.service }} \
+            --zip-file fileb://function.zip \
+            --publish
+
+      - name: Wait for Lambda update
+        run: |
+          aws lambda wait function-updated \
+            --function-name vaidyalink-staging-${{ matrix.service }}
+
+      - name: Update Lambda environment variables
+        run: |
+          aws lambda update-function-configuration \
+            --function-name vaidyalink-staging-${{ matrix.service }} \
+            --environment Variables="{ENVIRONMENT=staging,LOG_LEVEL=debug}"
+
+  # =============================================================================
+  # Deploy Frontend
+  # =============================================================================
+  deploy-frontend:
+    name: Deploy Frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [deploy-infrastructure]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          pnpm build
+        env:
+          NEXT_PUBLIC_API_ENDPOINT: ${{ needs.deploy-infrastructure.outputs.api_endpoint }}
+          NEXT_PUBLIC_WS_ENDPOINT: ${{ needs.deploy-infrastructure.outputs.websocket_endpoint }}
+          NEXT_PUBLIC_ENVIRONMENT: staging
+          NODE_ENV: production
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_STAGING }}
+          working-directory: ./frontend
+          vercel-args: '--prod'
+          alias-domains: staging.vaidyalink.com
+
+  # =============================================================================
+  # Post-deployment Tests
+  # =============================================================================
+  post-deploy-tests:
+    name: Post-deployment Smoke Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [deploy-infrastructure, deploy-lambdas, deploy-frontend]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test API health endpoint
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" ${{ needs.deploy-infrastructure.outputs.api_endpoint }}/health)
+          if [ $response -ne 200 ]; then
+            echo "Health check failed with status $response"
+            exit 1
+          fi
+          echo "✅ API health check passed"
+
+      - name: Test WebSocket connection
+        run: |
+          echo "WebSocket endpoint: ${{ needs.deploy-infrastructure.outputs.websocket_endpoint }}"
+          # Add WebSocket connection test here
+
+      - name: Test frontend deployment
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://staging.vaidyalink.com)
+          if [ $response -ne 200 ]; then
+            echo "Frontend health check failed with status $response"
+            exit 1
+          fi
+          echo "✅ Frontend health check passed"
+
+  # =============================================================================
+  # Deployment Notification
+  # =============================================================================
+  notify:
+    name: Send Deployment Notification
+    runs-on: ubuntu-latest
+    needs: [deploy-infrastructure, deploy-lambdas, deploy-frontend, post-deploy-tests]
+    if: always()
+
+    steps:
+      - name: Determine deployment status
+        id: status
+        run: |
+          if [[ "${{ needs.deploy-infrastructure.result }}" == "success" ]] && \
+             [[ "${{ needs.deploy-lambdas.result }}" == "success" ]] && \
+             [[ "${{ needs.deploy-frontend.result }}" == "success" ]] && \
+             [[ "${{ needs.post-deploy-tests.result }}" == "success" ]]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "message=✅ Staging deployment successful" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "message=❌ Staging deployment failed" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v1
+        if: always()
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          payload: |
+            {
+              "text": "${{ steps.status.outputs.message }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Staging Deployment*\n${{ steps.status.outputs.message }}\n\n*Environment:* staging\n*Branch:* ${{ github.ref_name }}\n*Commit:* ${{ github.sha }}\n*Actor:* ${{ github.actor }}"
+                  }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Workflow"
+                      },
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    }
+                  ]
+                }
+              ]
+            }

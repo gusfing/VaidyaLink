@@ -1,0 +1,36 @@
+{
+  "environment": "staging",
+  "region": "ap-south-1",
+  "account": "REPLACE_WITH_AWS_ACCOUNT_ID",
+  "vpcCidr": "10.1.0.0/16",
+  "domainName": "staging.vaidyalink.in",
+  "bedrockModelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "confidenceThreshold": 0.8,
+  "organizations": {
+    "enabled": false,
+    "accountEmails": {
+      "dev": "aws-dev@vaidyalink.in",
+      "staging": "aws-staging@vaidyalink.in",
+      "prod": "aws-prod@vaidyalink.in",
+      "security": "aws-security@vaidyalink.in",
+      "logging": "aws-logging@vaidyalink.in"
+    }
+  },
+  "lambdaMemory": {
+    "documentProcessing": 3072,
+    "voiceProcessing": 1536,
+    "clinicalSummarizer": 1536,
+    "fhirTransformer": 1024,
+    "abdmConnector": 1024,
+    "hitlHandler": 512
+  },
+  "lambdaTimeout": {
+    "documentProcessing": 300,
+    "voiceProcessing": 180,
+    "clinicalSummarizer": 60,
+    "fhirTransformer": 30,
+    "abdmConnector": 30,
+    "hitlHandler": 30
+  },
+  "enableIntelligentTiering": true
+}

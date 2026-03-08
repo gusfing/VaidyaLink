@@ -1,0 +1,396 @@
+name: Branch Protection Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - main
+      - develop
+
+# Cancel in-progress runs for the same workflow and branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # =============================================================================
+  # Lint Check
+  # =============================================================================
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+at:check
+
+  # =============================================================================
+  # Frontend Tests
+  # =============================================================================
+  test-frontend:
+    name: Test Frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          pnpm test --run --coverage
+        env:
+          CI: true
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./frontend/coverage/coverage-final.json
+          flags: frontend
+          name: frontend-coverage
+
+  # =============================================================================
+  # Backend Tests
+  # =============================================================================
+  test-backend:
+    name: Test Backend
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        service:
+          - document-processing
+          - voice-processing
+          - clinical-summarizer
+          - fhir-transformer
+          - abdm-connector
+          - hitl-handler
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python (for Python services)
+        if: contains(fromJSON('["document-processing", "clinical-summarizer", "fhir-transformer"]'), matrix.service)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Setup Node.js (for Node services)
+        if: contains(fromJSON('["voice-processing", "abdm-connector", "hitl-handler"]'), matrix.service)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: backend/${{ matrix.service }}/package-lock.json
+
+      - name: Install Python dependencies
+        if: contains(fromJSON('["document-processing", "clinical-summarizer", "fhir-transformer"]'), matrix.service)
+        run: |
+          cd backend/${{ matrix.service }}
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Install Node dependencies
+        if: contains(fromJSON('["voice-processing", "abdm-connector", "hitl-handler"]'), matrix.service)
+        run: |
+          cd backend/${{ matrix.service }}
+          npm ci
+
+      - name: Run Python tests
+        if: contains(fromJSON('["document-processing", "clinical-summarizer", "fhir-transformer"]'), matrix.service)
+        run: |
+          cd backend/${{ matrix.service }}
+          pytest --cov --cov-report=xml
+
+      - name: Run Node tests
+        if: contains(fromJSON('["voice-processing", "abdm-connector", "hitl-handler"]'), matrix.service)
+        run: |
+          cd backend/${{ matrix.service }}
+          npm test
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./backend/${{ matrix.service }}/coverage.xml
+          flags: backend-${{ matrix.service }}
+          name: backend-${{ matrix.service }}-coverage
+
+  # =============================================================================
+  # Security Scan
+  # =============================================================================
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Only run on PRs to main branch
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run npm audit
+        run: pnpm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Check for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+
+  # =============================================================================
+  # Build Verification
+  # =============================================================================
+  build:
+    name: Build Verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          pnpm build
+        env:
+          NEXT_PUBLIC_API_ENDPOINT: https://api.example.com
+          NODE_ENV: production
+
+      - name: Build infrastructure
+        run: |
+          cd infrastructure
+          pnpm build
+
+      - name: Check bundle size
+        run: |
+          cd frontend
+          npx @next/bundle-analyzer
+        continue-on-error: true
+
+  # =============================================================================
+  # E2E Tests (only for main branch PRs)
+  # =============================================================================
+  e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Only run on PRs to main branch
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build application
+        run: |
+          cd frontend
+          pnpm build
+        env:
+          NEXT_PUBLIC_API_ENDPOINT: http://localhost:3000/api
+
+      - name: Run E2E tests
+        run: |
+          cd frontend
+          pnpm test:e2e
+        env:
+          CI: true
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: frontend/playwright-report/
+          retention-days: 30
+
+  # =============================================================================
+  # Commit Message Validation
+  # =============================================================================
+  commit-lint:
+    name: Validate Commit Messages
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install commitlint
+        run: |
+          npm install -g @commitlint/cli @commitlint/config-conventional
+
+      - name: Validate commit messages
+        run: |
+          npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+
+  # =============================================================================
+  # PR Title Validation
+  # =============================================================================
+  pr-title-lint:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Check PR title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          scopes: |
+            frontend
+            backend
+            document
+            voice
+            fhir
+            abdm
+            hitl
+            infra
+            api
+            auth
+            db
+            security
+            monitoring
+          requireScope: false
+
+  # =============================================================================
+  # Code Coverage Check
+  # =============================================================================
+  coverage-check:
+    name: Code Coverage Check
+    runs-on: ubuntu-latest
+    needs: [test-frontend, test-backend]
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download coverage reports
+        uses: actions/download-artifact@v3
+
+      - name: Check coverage threshold
+        run: |
+          echo "Coverage check would run here"
+          # Add coverage threshold check logic
+          # Fail if coverage drops below 80%
+
+  # =============================================================================
+  # Status Check Summary
+  # =============================================================================
+  status-check:
+    name: All Checks Passed
+    runs-on: ubuntu-latest
+    needs: [lint, test-frontend, test-backend, build, commit-lint, pr-title-lint]
+    if: always()
+
+    steps:
+      - name: Check all job statuses
+        run: |
+          if [[ "${{ needs.lint.result }}" != "success" ]] || \
+             [[ "${{ needs.test-frontend.result }}" != "success" ]] || \
+             [[ "${{ needs.test-backend.result }}" != "success" ]] || \
+             [[ "${{ needs.build.result }}" != "success" ]] || \
+             [[ "${{ needs.commit-lint.result }}" != "success" ]] || \
+             [[ "${{ needs.pr-title-lint.result }}" != "success" ]]; then
+            echo "❌ One or more required checks failed"
+            exit 1
+          fi
+          echo "✅ All required checks passed"

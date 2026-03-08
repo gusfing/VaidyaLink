@@ -1,0 +1,11 @@
+FROM public.ecr.aws/lambda/python:3.11
+
+RUN pip install --upgrade pip
+RUN pip install awslambdaric boto3
+
+COPY requirements.txt ${LAMBDA_TASK_ROOT}/
+RUN pip install -r ${LAMBDA_TASK_ROOT}/requirements.txt
+
+COPY . ${LAMBDA_TASK_ROOT}/
+
+CMD [ "handler.lambda_handler" ]

@@ -1,0 +1,66 @@
+{
+  "version": "50.0.0",
+  "files": {
+    "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "DocumentScan-dev/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
+      "source": {
+        "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "038208944386-ap-south-1-de3228c9": {
+          "bucketName": "cdk-hnb659fds-assets-038208944386-ap-south-1",
+          "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
+          "region": "ap-south-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::038208944386:role/cdk-hnb659fds-file-publishing-role-038208944386-ap-south-1"
+        }
+      }
+    },
+    "9da455bb92e21ebaf360332d7783794624b8128b3d1c2ee6e5f9094537f8f7c9": {
+      "displayName": "DocumentProcessor/Code",
+      "source": {
+        "path": "asset.9da455bb92e21ebaf360332d7783794624b8128b3d1c2ee6e5f9094537f8f7c9",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "038208944386-ap-south-1-8c73ae33": {
+          "bucketName": "cdk-hnb659fds-assets-038208944386-ap-south-1",
+          "objectKey": "9da455bb92e21ebaf360332d7783794624b8128b3d1c2ee6e5f9094537f8f7c9.zip",
+          "region": "ap-south-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::038208944386:role/cdk-hnb659fds-file-publishing-role-038208944386-ap-south-1"
+        }
+      }
+    },
+    "88e4abc1886680c2ef85e4c42a352a9a8876246dd556bfb742198295a5ec5d51": {
+      "displayName": "ApiLambda/Code",
+      "source": {
+        "path": "asset.88e4abc1886680c2ef85e4c42a352a9a8876246dd556bfb742198295a5ec5d51",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "038208944386-ap-south-1-d23e2c8e": {
+          "bucketName": "cdk-hnb659fds-assets-038208944386-ap-south-1",
+          "objectKey": "88e4abc1886680c2ef85e4c42a352a9a8876246dd556bfb742198295a5ec5d51.zip",
+          "region": "ap-south-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::038208944386:role/cdk-hnb659fds-file-publishing-role-038208944386-ap-south-1"
+        }
+      }
+    },
+    "0599bdcd684d3dc92d9c5bb99d85737817ef3d36834e43207f14d1bcc92109a8": {
+      "displayName": "document-scan-dev Template",
+      "source": {
+        "path": "DocumentScan-dev.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "038208944386-ap-south-1-966fb513": {
+          "bucketName": "cdk-hnb659fds-assets-038208944386-ap-south-1",
+          "objectKey": "0599bdcd684d3dc92d9c5bb99d85737817ef3d36834e43207f14d1bcc92109a8.json",
+          "region": "ap-south-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::038208944386:role/cdk-hnb659fds-file-publishing-role-038208944386-ap-south-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@vaidyalink/encryption",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KMS-based encryption utilities for VaidyaLink PHI data",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@aws-sdk/client-kms": "^3.490.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "*.js",
+      "!index.js",
+      "!examples/**"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.test.js"
+    ]
+  }
+}

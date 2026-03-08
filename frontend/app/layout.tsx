@@ -17,6 +17,12 @@ export const metadata: Metadata = {
   description:
     'Transform handwritten medical records into structured, globally interoperable HL7 FHIR data. ABDM compliant with multilingual support for India.',
   manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',

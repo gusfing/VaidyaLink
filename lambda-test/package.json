@@ -1,0 +1,31 @@
+{
+  "name": "api-handler",
+  "version": "1.0.0",
+  "description": "API Lambda handler for document-scan-demo with Express.js",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:properties": "jest __properties__",
+    "test:properties:watch": "jest __properties__ --watch"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2",
+    "serverless-http": "^3.2.0",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
+    "@aws-sdk/client-s3": "^3.450.0",
+    "@aws-sdk/s3-request-presigner": "^3.450.0",
+    "@aws-sdk/client-dynamodb": "^3.450.0",
+    "@aws-sdk/lib-dynamodb": "^3.450.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.8",
+    "fast-check": "^3.15.0",
+    "supertest": "^6.3.3"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@vaidyalink/rate-limiter",
+  "version": "1.0.0",
+  "description": "Rate limiting Lambda authorizer for VaidyaLink API Gateway",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.450.0",
+    "@aws-sdk/lib-dynamodb": "^3.450.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

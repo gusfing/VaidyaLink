@@ -1,0 +1,95 @@
+# LocalStack Configuration for VaidyaLink
+# https://docs.localstack.cloud/references/configuration/
+
+# Core Configuration
+version: '1.0'
+
+# Service Configuration
+services:
+  # AWS Services to emulate
+  s3:
+    enabled: true
+  dynamodb:
+    enabled: true
+  lambda:
+    enabled: true
+  apigateway:
+    enabled: true
+  cognito-idp:
+    enabled: true
+  kms:
+    enabled: true
+  secretsmanager:
+    enabled: true
+  sns:
+    enabled: true
+  sqs:
+    enabled: true
+  events:
+    enabled: true
+  logs:
+    enabled: true
+  sts:
+    enabled: true
+  iam:
+    enabled: true
+
+# Lambda Configuration
+lambda:
+  # Use docker-reuse executor for better performance
+  executor: docker-reuse
+  # Keep containers running for faster subsequent invocations
+  remove_containers: false
+  # Forward Lambda logs to LocalStack logs
+  forward_logs: true
+  # Lambda runtime environment
+  runtime_environment:
+    AWS_REGION: ap-south-1
+    ENVIRONMENT: local
+
+# S3 Configuration
+s3:
+  # Enable virtual host style URLs
+  virtual_host: false
+  # Enable S3 event notifications
+  notifications: true
+
+# DynamoDB Configuration
+dynamodb:
+  # Enable DynamoDB Streams
+  streams: true
+  # Share DynamoDB instance across services
+  share_db: true
+
+# API Gateway Configuration
+apigateway:
+  # Enable CORS for local development
+  cors: true
+
+# Persistence Configuration
+persistence:
+  # Enable data persistence across restarts
+  enabled: true
+  # Persistence directory
+  directory: /tmp/localstack/data
+
+# Logging Configuration
+logging:
+  # Log level (trace, debug, info, warn, error)
+  level: info
+  # Enable structured logging
+  structured: true
+
+# Network Configuration
+network:
+  # Bind to all interfaces
+  host: 0.0.0.0
+  # Main gateway port
+  gateway_port: 4566
+
+# Development Configuration
+develop:
+  # Enable hot reloading
+  hot_reload: true
+  # Enable debug mode
+  debug: true

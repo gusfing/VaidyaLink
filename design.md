@@ -5,6 +5,7 @@
 VaidyaLink is a serverless, AI-powered healthcare record digitization platform built on AWS infrastructure. The system transforms handwritten and printed medical documents from India's diverse healthcare ecosystem into structured, globally interoperable HL7 FHIR data. The architecture prioritizes cost-efficiency through a pay-per-scan model, accessibility through multilingual support, and medical safety through human-in-the-loop verification.
 
 The platform serves three primary user groups:
+
 1. Healthcare providers digitizing patient records in clinical settings
 2. Patients accessing and managing their health information
 3. Medical tourists requiring international-standard health records
@@ -96,7 +97,7 @@ The platform serves three primary user groups:
 2. **Pre-signed Upload**: Client requests pre-signed S3 URL from API Gateway
 3. **S3 Storage**: Image uploaded directly to S3 with encryption
 4. **Event Trigger**: S3 event triggers Document Processing Lambda
-5. **AI Extraction**: 
+5. **AI Extraction**:
    - PaddleOCR extracts text from image
    - Amazon Bedrock structures extracted text into clinical fields
    - Confidence scores calculated for each field
@@ -131,6 +132,7 @@ The platform serves three primary user groups:
 **Technology**: Next.js 14 with App Router, TypeScript, Tailwind CSS
 
 **Key Features**:
+
 - Progressive Web App with offline support
 - Responsive design for mobile and desktop
 - Multilingual UI using next-i18next
@@ -138,27 +140,28 @@ The platform serves three primary user groups:
 - Camera integration for document capture
 
 **API Integration**:
+
 ```typescript
 interface VaidyaLinkAPI {
   // Document scanning
-  uploadDocument(file: File, metadata: DocumentMetadata): Promise<ScanJob>
-  getScanStatus(jobId: string): Promise<ScanStatus>
-  getExtractedData(jobId: string): Promise<ExtractedRecord>
-  
+  uploadDocument(file: File, metadata: DocumentMetadata): Promise<ScanJob>;
+  getScanStatus(jobId: string): Promise<ScanStatus>;
+  getExtractedData(jobId: string): Promise<ExtractedRecord>;
+
   // Voice interface
-  uploadVoiceRecording(audio: Blob, language: string): Promise<TranscriptionJob>
-  confirmTranscription(jobId: string, confirmed: boolean): Promise<void>
-  
+  uploadVoiceRecording(audio: Blob, language: string): Promise<TranscriptionJob>;
+  confirmTranscription(jobId: string, confirmed: boolean): Promise<void>;
+
   // Patient records
-  getPatientRecords(patientId: string): Promise<FHIRBundle>
-  getClinicalSummary(patientId: string): Promise<ClinicalSummary>
-  
+  getPatientRecords(patientId: string): Promise<FHIRBundle>;
+  getClinicalSummary(patientId: string): Promise<ClinicalSummary>;
+
   // FHIR export
-  exportToFHIR(patientId: string, format: 'json' | 'xml'): Promise<Blob>
-  
+  exportToFHIR(patientId: string, format: 'json' | 'xml'): Promise<Blob>;
+
   // ABDM integration
-  linkABHAId(abhaId: string, otp: string): Promise<ABHALinkStatus>
-  fetchABDMRecords(abhaId: string): Promise<FHIRBundle>
+  linkABHAId(abhaId: string, otp: string): Promise<ABHALinkStatus>;
+  fetchABDMRecords(abhaId: string): Promise<FHIRBundle>;
 }
 ```
 
@@ -167,6 +170,7 @@ interface VaidyaLinkAPI {
 **Technology**: Amazon API Gateway (REST + WebSocket)
 
 **REST Endpoints**:
+
 ```
 POST   /api/v1/scans/upload-url          # Get pre-signed S3 URL
 POST   /api/v1/scans                     # Create scan job
@@ -190,6 +194,7 @@ POST   /api/v1/hitl/{jobId}/verify       # Submit verification
 ```
 
 **WebSocket Endpoints**:
+
 ```
 wss://api.vaidyalink.com/ws
   - Connection: Authenticated via Cognito token
@@ -198,7 +203,8 @@ wss://api.vaidyalink.com/ws
 
 **Authentication**: AWS Cognito with JWT tokens
 
-**Rate Limiting**: 
+**Rate Limiting**:
+
 - Standard users: 100 requests/minute
 - Healthcare providers: 1000 requests/minute
 - Burst capacity: 200 requests
@@ -208,6 +214,7 @@ wss://api.vaidyalink.com/ws
 **Technology**: Python 3.11, PaddleOCR, Boto3
 
 **Responsibilities**:
+
 - Receive S3 event notifications
 - Download and preprocess images
 - Execute OCR extraction
@@ -217,24 +224,26 @@ wss://api.vaidyalink.com/ws
 - Trigger FHIR transformation
 
 **Key Functions**:
+
 ```python
 def process_document(event: S3Event) -> ProcessingResult:
     """Main handler for document processing"""
-    
+
 def extract_text(image_path: str) -> OCRResult:
     """Extract text using PaddleOCR"""
-    
+
 def structure_clinical_data(ocr_text: str) -> StructuredData:
     """Use Bedrock to structure extracted text"""
-    
+
 def calculate_confidence(structured_data: StructuredData) -> ConfidenceScores:
     """Calculate field-level confidence scores"""
-    
+
 def should_route_to_hitl(confidence_scores: ConfidenceScores) -> bool:
     """Determine if human verification needed"""
 ```
 
 **Environment Variables**:
+
 - `BEDROCK_MODEL_ID`: Claude 3.5 Sonnet model identifier
 - `CONFIDENCE_THRESHOLD`: Minimum confidence for auto-processing (default: 0.80)
 - `S3_BUCKET`: Source bucket for images
@@ -246,6 +255,7 @@ def should_route_to_hitl(confidence_scores: ConfidenceScores) -> bool:
 **Technology**: Node.js 18, Axios for Bhashini API
 
 **Responsibilities**:
+
 - Receive audio file references
 - Call Bhashini API for transcription
 - Structure transcribed text using Bedrock
@@ -253,6 +263,7 @@ def should_route_to_hitl(confidence_scores: ConfidenceScores) -> bool:
 - Create FHIR Observation resources
 
 **Bhashini Integration**:
+
 ```javascript
 interface BhashiniRequest {
   audio: string;           // Base64 encoded audio
@@ -267,7 +278,7 @@ interface BhashiniResponse {
 }
 
 async function transcribeAudio(
-  audioUrl: string, 
+  audioUrl: string,
   language: string
 ): Promise<BhashiniResponse> {
   // Call Bhashini API
@@ -279,6 +290,7 @@ async function transcribeAudio(
 **Technology**: Python 3.11, Amazon Bedrock SDK
 
 **Responsibilities**:
+
 - Query HealthLake for patient FHIR resources
 - Aggregate clinical data chronologically
 - Generate structured summary using Claude 3.5 Sonnet
@@ -286,6 +298,7 @@ async function transcribeAudio(
 - Format output for clinical display
 
 **Prompt Engineering**:
+
 ```python
 SUMMARY_PROMPT = """
 You are a medical AI assistant. Generate a concise clinical summary from the following patient records.
@@ -321,6 +334,7 @@ Output Format:
 **Technology**: Python 3.11, FHIR-Parser library
 
 **Responsibilities**:
+
 - Convert structured clinical data to FHIR R4 resources
 - Map Indian medical codes to international standards
 - Validate FHIR resources against profiles
@@ -328,24 +342,26 @@ Output Format:
 - Generate FHIR bundles for export
 
 **FHIR Resource Mapping**:
+
 ```python
 def create_patient_resource(data: PatientData) -> Patient:
     """Create FHIR Patient resource"""
-    
+
 def create_encounter_resource(data: EncounterData) -> Encounter:
     """Create FHIR Encounter resource"""
-    
+
 def create_medication_statement(data: MedicationData) -> MedicationStatement:
     """Create FHIR MedicationStatement resource"""
-    
+
 def create_observation(data: ObservationData) -> Observation:
     """Create FHIR Observation resource"""
-    
+
 def create_diagnostic_report(data: DiagnosticData) -> DiagnosticReport:
     """Create FHIR DiagnosticReport resource"""
 ```
 
 **Code System Mapping**:
+
 - Indian drug names → WHO ATC codes
 - Indian diagnostic codes → ICD-10
 - Lab tests → LOINC codes
@@ -356,6 +372,7 @@ def create_diagnostic_report(data: DiagnosticData) -> DiagnosticReport:
 **Technology**: Node.js 18, ABDM SDK
 
 **Responsibilities**:
+
 - Authenticate users via ABHA ID
 - Fetch health records from ABDM HIE
 - Push FHIR resources to ABDM
@@ -363,34 +380,35 @@ def create_diagnostic_report(data: DiagnosticData) -> DiagnosticReport:
 - Verify healthcare facilities
 
 **ABDM API Integration**:
+
 ```javascript
 interface ABDMConnector {
   // Authentication
   authenticateABHA(abhaId: string, otp: string): Promise<AuthToken>
-  
+
   // Health Information Exchange
   fetchHealthRecords(
-    abhaId: string, 
+    abhaId: string,
     consentId: string
   ): Promise<FHIRBundle>
-  
+
   pushHealthRecords(
-    abhaId: string, 
-    bundle: FHIRBundle, 
+    abhaId: string,
+    bundle: FHIRBundle,
     consentId: string
   ): Promise<PushStatus>
-  
+
   // Consent Management
   requestConsent(
-    abhaId: string, 
-    purpose: string, 
+    abhaId: string,
+    purpose: string,
     hiTypes: string[]
   ): Promise<ConsentRequest>
-  
+
   checkConsentStatus(consentId: string): Promise<ConsentStatus>
-  
+
   revokeConsent(consentId: string): Promise<void>
-  
+
   // Health Facility Registry
   verifyFacility(facilityId: string): Promise<FacilityInfo>
 }
@@ -401,6 +419,7 @@ interface ABDMConnector {
 **Technology**: React admin panel, SQS for queue management
 
 **Responsibilities**:
+
 - Display low-confidence extractions for human review
 - Show original document alongside extracted data
 - Provide correction interface
@@ -408,6 +427,7 @@ interface ABDMConnector {
 - Update records after verification
 
 **Verification Interface**:
+
 ```typescript
 interface HITLVerificationTask {
   jobId: string;
@@ -432,16 +452,17 @@ interface VerificationResult {
 ### DynamoDB Schema
 
 **ScanJobs Table**:
+
 ```typescript
 interface ScanJob {
-  PK: string;              // "JOB#${jobId}"
-  SK: string;              // "METADATA"
+  PK: string; // "JOB#${jobId}"
+  SK: string; // "METADATA"
   jobId: string;
   patientId: string;
   status: 'pending' | 'processing' | 'completed' | 'failed' | 'hitl_required';
   imageS3Key: string;
   imageS3Bucket: string;
-  createdAt: string;       // ISO 8601
+  createdAt: string; // ISO 8601
   updatedAt: string;
   processingStartedAt?: string;
   processingCompletedAt?: string;
@@ -455,10 +476,11 @@ interface ScanJob {
 ```
 
 **Patients Table**:
+
 ```typescript
 interface Patient {
-  PK: string;              // "PATIENT#${patientId}"
-  SK: string;              // "PROFILE"
+  PK: string; // "PATIENT#${patientId}"
+  SK: string; // "PROFILE"
   patientId: string;
   abhaId?: string;
   name: string;
@@ -469,15 +491,16 @@ interface Patient {
   preferredLanguage: string;
   createdAt: string;
   updatedAt: string;
-  fhirPatientId: string;   // HealthLake Patient resource ID
+  fhirPatientId: string; // HealthLake Patient resource ID
 }
 ```
 
 **VoiceJobs Table**:
+
 ```typescript
 interface VoiceJob {
-  PK: string;              // "VOICE#${jobId}"
-  SK: string;              // "METADATA"
+  PK: string; // "VOICE#${jobId}"
+  SK: string; // "METADATA"
   jobId: string;
   patientId: string;
   status: 'pending' | 'transcribing' | 'confirming' | 'completed' | 'failed';
@@ -495,6 +518,7 @@ interface VoiceJob {
 ### FHIR Resources
 
 **Patient Resource**:
+
 ```json
 {
   "resourceType": "Patient",
@@ -547,6 +571,7 @@ interface VoiceJob {
 ```
 
 **MedicationStatement Resource**:
+
 ```json
 {
   "resourceType": "MedicationStatement",

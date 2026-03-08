@@ -1,0 +1,36 @@
+{
+  "environment": "dev",
+  "region": "ap-south-1",
+  "account": "REPLACE_WITH_AWS_ACCOUNT_ID",
+  "vpcCidr": "10.0.0.0/16",
+  "domainName": "dev.vaidyalink.in",
+  "bedrockModelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "confidenceThreshold": 0.8,
+  "organizations": {
+    "enabled": false,
+    "accountEmails": {
+      "dev": "aws-dev@vaidyalink.in",
+      "staging": "aws-staging@vaidyalink.in",
+      "prod": "aws-prod@vaidyalink.in",
+      "security": "aws-security@vaidyalink.in",
+      "logging": "aws-logging@vaidyalink.in"
+    }
+  },
+  "lambdaMemory": {
+    "documentProcessing": 2048,
+    "voiceProcessing": 1024,
+    "clinicalSummarizer": 1024,
+    "fhirTransformer": 512,
+    "abdmConnector": 512,
+    "hitlHandler": 512
+  },
+  "lambdaTimeout": {
+    "documentProcessing": 300,
+    "voiceProcessing": 180,
+    "clinicalSummarizer": 60,
+    "fhirTransformer": 30,
+    "abdmConnector": 30,
+    "hitlHandler": 30
+  },
+  "enableIntelligentTiering": true
+}

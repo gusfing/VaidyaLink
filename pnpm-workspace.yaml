@@ -1,0 +1,22 @@
+# pnpm workspace configuration for VaidyaLink monorepo
+# This file defines all packages in the workspace for proper dependency management
+
+packages:
+  # Frontend Next.js application
+  - 'frontend'
+
+  # Backend Lambda services (Node.js)
+  # Includes: abdm-connector, voice-processing, hitl-handler, api-handler
+  - 'backend/abdm-connector'
+  - 'backend/voice-processing'
+  - 'backend/hitl-handler'
+  - 'backend/api-handler'
+
+  # Backend shared utilities (if needed for Node.js services)
+  - 'backend/shared'
+
+  # AWS CDK infrastructure
+  - 'infrastructure'
+
+# Note: Python Lambda services (document-processing, clinical-summarizer, fhir-transformer)
+# are managed separately via requirements.txt and are not part of the pnpm workspace

@@ -1,0 +1,300 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - main
+      - develop
+
+# Cancel in-progress runs for the same workflow and branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # =============================================================================
+  # Lint Check
+  # =============================================================================
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ESLint
+        run: pnpm lint
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python linting tools
+        run: |
+          pip install black flake8
+
+      - name: Check Python formatting
+        run: pnpm format:python --check
+
+      - name: Run Python linting
+        run: pnpm lint:python
+
+  # =============================================================================
+  # Frontend Tests
+  # =============================================================================
+  test-frontend:
+    name: Test Frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          pnpm test --run --coverage
+        env:
+          CI: true
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./frontend/coverage/coverage-final.json
+          flags: frontend
+          name: frontend-coverage
+
+  # =============================================================================
+  # Backend Tests
+  # =============================================================================
+  test-backend:
+    name: Test Backend
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        service:
+          - document-processing
+          - voice-processing
+          - clinical-summarizer
+          - fhir-transformer
+          - abdm-connector
+          - hitl-handler
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - nam
+'
+          cache-dependency-path: backend/${{ matrix.service }}/package-lock.json
+
+      - name: Install Python dependencies
+        if: contains(fromJSON('["document-processing", "clinical-summarizer", "fhir-transformer"]'), matrix.service)
+        run: |
+          cd backend/${{ matrix.service }}
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Install Node dependencies
+        if: contains(fromJSON('["voice-processing", "abdm-connector", "hitl-handler"]'), matrix.service)
+        run: |
+          cd backend/${{ matrix.service }}
+          npm ci
+
+      - name: Run Python tests
+        if: contains(fromJSON('["document-processing", "clinical-summarizer", "fhir-transformer"]'), matrix.service)
+        run: |
+          cd backend/${{ matrix.service }}
+          pytest --cov --cov-report=xml
+
+      - name: Run Node tests
+        if: contains(fromJSON('["voice-processing", "abdm-connector", "hitl-handler"]'), matrix.service)
+        run: |
+          cd backend/${{ matrix.service }}
+          npm test
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./backend/${{ matrix.service }}/coverage.xml
+          flags: backend-${{ matrix.service }}
+          name: backend-${{ matrix.service }}-coverage
+
+  # =============================================================================
+  # Infrastructure Tests
+  # =============================================================================
+  test-infrastructure:
+    name: Test Infrastructure
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run infrastructure tests
+        run: |
+          cd infrastructure
+          pnpm test
+
+  # =============================================================================
+  # Build Verification
+  # =============================================================================
+  build:
+    name: Build Verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          pnpm build
+        env:
+          NEXT_PUBLIC_API_ENDPOINT: https://api.example.com
+          NODE_ENV: production
+
+      - name: Build infrastructure
+        run: |
+          cd infrastructure
+          pnpm build
+
+      - name: Synthesize CDK stacks
+        run: |
+          cd infrastructure
+          pnpm synth
+        env:
+          CDK_DEFAULT_ACCOUNT: '123456789012'
+          CDK_DEFAULT_REGION: 'ap-south-1'
+
+  # =============================================================================
+  # Security Scan
+  # =============================================================================
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run npm audit
+        run: pnpm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Check for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+
+  # =============================================================================
+  # Status Check Summary
+  # =============================================================================
+  status-check:
+    name: All Checks Passed
+    runs-on: ubuntu-latest
+    needs: [lint, test-frontend, test-backend, test-infrastructure, build, security-scan]
+    if: always()
+
+    steps:
+      - name: Check all job statuses
+        run: |
+          if [[ "${{ needs.lint.result }}" != "success" ]] || \
+             [[ "${{ needs.test-frontend.result }}" != "success" ]] || \
+             [[ "${{ needs.test-backend.result }}" != "success" ]] || \
+             [[ "${{ needs.test-infrastructure.result }}" != "success" ]] || \
+             [[ "${{ needs.build.result }}" != "success" ]] || \
+             [[ "${{ needs.security-scan.result }}" != "success" ]]; then
+            echo "❌ One or more required checks failed"
+            exit 1
+          fi
+          echo "✅ All required checks passed"

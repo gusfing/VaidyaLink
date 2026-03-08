@@ -1,0 +1,40 @@
+{
+  "name": "@vaidyalink/s3-presigned-urls",
+  "version": "1.0.0",
+  "description": "Secure S3 pre-signed URL generation utilities for VaidyaLink",
+  "main": "presigned-urls.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "keywords": [
+    "s3",
+    "presigned-url",
+    "aws",
+    "upload",
+    "download",
+    "security"
+  ],
+  "author": "VaidyaLink Team",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.450.0",
+    "@aws-sdk/s3-request-presigner": "^3.450.0",
+    "@aws-sdk/s3-presigned-post": "^3.450.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "aws-sdk-client-mock": "^3.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "presigned-urls.js"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.test.js"
+    ]
+  }
+}
