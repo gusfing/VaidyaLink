@@ -528,7 +528,7 @@ p {
 .records-library-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding-bottom: 2rem;
+  padding-bottom: 90px; /* Extra space for bottom nav */
 }
 
 .records-library-page h1 {
@@ -663,7 +663,7 @@ p {
 .health-passport-page {
   max-width: 800px;
   margin: 0 auto;
-  padding-bottom: var(--spacing-xl);
+  padding-bottom: 90px; /* Extra space for bottom nav */
 }
 
 .page-header {
@@ -1125,7 +1125,7 @@ p {
 .doctor-portal-page {
   max-width: 900px;
   margin: 0 auto;
-  padding-bottom: 2rem;
+  padding-bottom: 90px; /* Extra space for bottom nav */
 }
 
 .doctor-portal-page h1 {
@@ -1372,7 +1372,7 @@ p {
 .voice-dashboard-page {
   max-width: 800px;
   margin: 0 auto;
-  padding-bottom: 2rem;
+  padding-bottom: 90px; /* Extra space for bottom nav */
 }
 
 .voice-dashboard-page h1 {
@@ -1499,7 +1499,7 @@ p {
 .scanner-page {
   max-width: 800px;
   margin: 0 auto;
-  padding-bottom: 2rem;
+  padding-bottom: 90px; /* Extra space for bottom nav */
 }
 
 .scanner-page h1 {
@@ -1515,6 +1515,8 @@ p {
   box-shadow: 0 2px 8px var(--shadow-light);
   margin-bottom: 1.5rem;
   border: 1px solid var(--border-light);
+  position: relative;
+  z-index: 1; /* Below bottom nav */
 }
 
 .camera-viewfinder {
@@ -1525,6 +1527,7 @@ p {
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 1.5rem;
+  z-index: 1; /* Below bottom nav */
 }
 
 .camera-placeholder {
@@ -1774,7 +1777,7 @@ p {
 .timeline-page {
   max-width: 900px;
   margin: 0 auto;
-  padding-bottom: 2rem;
+  padding-bottom: 90px; /* Extra space for bottom nav */
 }
 
 .timeline-page h1 {
