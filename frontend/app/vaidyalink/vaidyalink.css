@@ -326,7 +326,7 @@ p {
   margin-bottom: var(--spacing-md);
 }
 
-/* Dark mode support */
+/* Dark mode support - both system preference and manual toggle */
 @media (prefers-color-scheme: dark) {
   body {
     background: #0a0a0a;
@@ -371,6 +371,61 @@ p {
   .btn-secondary:hover {
     background: var(--border-dark);
   }
+}
+
+/* Manual dark mode toggle support */
+.dark body,
+[data-theme='dark'] body {
+  background: #0a0a0a;
+}
+
+.dark .vaidyalink-app,
+[data-theme='dark'] .vaidyalink-app {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+.dark .vaidyalink-header,
+[data-theme='dark'] .vaidyalink-header {
+  background: var(--bg-dark);
+  border-bottom-color: var(--border-dark);
+  box-shadow: 0 2px 4px var(--shadow-dark);
+}
+
+.dark .bottom-nav,
+[data-theme='dark'] .bottom-nav {
+  background: var(--bg-dark);
+  border-top-color: var(--border-dark);
+  box-shadow: 0 -2px 10px var(--shadow-dark);
+}
+
+.dark .nav-item,
+[data-theme='dark'] .nav-item {
+  color: var(--text-secondary-dark);
+}
+
+.dark .nav-item.active,
+.dark .nav-item:hover,
+[data-theme='dark'] .nav-item.active,
+[data-theme='dark'] .nav-item:hover {
+  color: var(--primary-light);
+}
+
+.dark .card,
+[data-theme='dark'] .card {
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+}
+
+.dark .btn-secondary,
+[data-theme='dark'] .btn-secondary {
+  background: var(--bg-secondary-dark);
+  color: var(--text-dark);
+}
+
+.dark .btn-secondary:hover,
+[data-theme='dark'] .btn-secondary:hover {
+  background: var(--border-dark);
 }
 
 /* Support for explicit theme classes */
@@ -3106,4 +3161,355 @@ html {
   .filter-btn:active {
     transform: scale(0.95);
   }
+}
+
+/* ===== COMPREHENSIVE DARK MODE FIX ===== */
+
+/* Apply dark mode styles when .dark class or data-theme='dark' is present */
+.dark,
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+/* All text colors */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6,
+[data-theme='dark'] h1,
+[data-theme='dark'] h2,
+[data-theme='dark'] h3,
+[data-theme='dark'] h4,
+[data-theme='dark'] h5,
+[data-theme='dark'] h6 {
+  color: var(--text-dark);
+}
+
+.dark p,
+.dark span,
+.dark div,
+[data-theme='dark'] p,
+[data-theme='dark'] span,
+[data-theme='dark'] div {
+  color: inherit;
+}
+
+/* All cards and containers */
+.dark .info-card,
+.dark .event-card,
+.dark .record-card,
+.dark .health-passport-card,
+.dark .patient-snapshot,
+.dark .scanner-container,
+.dark .summary-card,
+[data-theme='dark'] .info-card,
+[data-theme='dark'] .event-card,
+[data-theme='dark'] .record-card,
+[data-theme='dark'] .health-passport-card,
+[data-theme='dark'] .patient-snapshot,
+[data-theme='dark'] .scanner-container,
+[data-theme='dark'] .summary-card {
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+  color: var(--text-dark);
+}
+
+/* Search and inputs */
+.dark .search-bar,
+.dark input,
+.dark select,
+.dark textarea,
+[data-theme='dark'] .search-bar,
+[data-theme='dark'] input,
+[data-theme='dark'] select,
+[data-theme='dark'] textarea {
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+  color: var(--text-dark);
+}
+
+.dark .search-bar input,
+[data-theme='dark'] .search-bar input {
+  color: var(--text-dark);
+}
+
+/* Tabs and filters */
+.dark .tab,
+.dark .filter-btn,
+[data-theme='dark'] .tab,
+[data-theme='dark'] .filter-btn {
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+  color: var(--text-dark);
+}
+
+.dark .tab:hover:not(.active),
+.dark .filter-btn:hover:not(.active),
+[data-theme='dark'] .tab:hover:not(.active),
+[data-theme='dark'] .filter-btn:hover:not(.active) {
+  background: var(--bg-dark);
+}
+
+/* Processing stages */
+.dark .processing-stages,
+.dark .stage-item,
+[data-theme='dark'] .processing-stages,
+[data-theme='dark'] .stage-item {
+  background: var(--bg-secondary-dark);
+}
+
+.dark .stage-icon,
+[data-theme='dark'] .stage-icon {
+  background: var(--bg-dark);
+  border-color: var(--border-dark);
+}
+
+.dark .stage-message,
+[data-theme='dark'] .stage-message {
+  color: var(--text-dark);
+}
+
+/* Progress bar */
+.dark .progress-bar,
+[data-theme='dark'] .progress-bar {
+  background: var(--bg-secondary-dark);
+}
+
+/* Vitals, meds, entities */
+.dark .vital-item,
+.dark .med-item,
+.dark .entity-item,
+.dark .scan-item,
+.dark .ocr-text,
+.dark .structured-data,
+[data-theme='dark'] .vital-item,
+[data-theme='dark'] .med-item,
+[data-theme='dark'] .entity-item,
+[data-theme='dark'] .scan-item,
+[data-theme='dark'] .ocr-text,
+[data-theme='dark'] .structured-data {
+  background: var(--bg-dark);
+  border-color: var(--border-dark);
+  color: var(--text-dark);
+}
+
+/* Contact and doctor items */
+.dark .contact-item,
+.dark .doctor-item,
+[data-theme='dark'] .contact-item,
+[data-theme='dark'] .doctor-item {
+  background: var(--bg-dark);
+  border-color: var(--border-dark);
+}
+
+/* Tags */
+.dark .tag,
+[data-theme='dark'] .tag {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  border-color: var(--border-dark);
+}
+
+/* Timeline */
+.dark .timeline::before,
+[data-theme='dark'] .timeline::before {
+  background: var(--border-dark);
+}
+
+/* Buttons */
+.dark .action-btn,
+.dark .reset-btn,
+.dark .expand-btn,
+[data-theme='dark'] .action-btn,
+[data-theme='dark'] .reset-btn,
+[data-theme='dark'] .expand-btn {
+  background: var(--bg-secondary-dark);
+  border-color: var(--primary-light);
+  color: var(--primary-light);
+}
+
+.dark .action-btn.primary,
+[data-theme='dark'] .action-btn.primary {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* Placeholders */
+.dark .photo-placeholder,
+.dark .thumb-placeholder,
+.dark .doctor-photo,
+.dark .patient-photo,
+.dark .scan-thumb,
+.dark .card-icon,
+.dark .qr-code-placeholder,
+[data-theme='dark'] .photo-placeholder,
+[data-theme='dark'] .thumb-placeholder,
+[data-theme='dark'] .doctor-photo,
+[data-theme='dark'] .patient-photo,
+[data-theme='dark'] .scan-thumb,
+[data-theme='dark'] .card-icon,
+[data-theme='dark'] .qr-code-placeholder {
+  background: var(--border-dark);
+}
+
+.dark .photo-placeholder .material-symbols-outlined,
+.dark .thumb-placeholder .material-symbols-outlined,
+.dark .doctor-photo .material-symbols-outlined,
+.dark .patient-photo .material-symbols-outlined,
+.dark .scan-thumb .material-symbols-outlined,
+[data-theme='dark'] .photo-placeholder .material-symbols-outlined,
+[data-theme='dark'] .thumb-placeholder .material-symbols-outlined,
+[data-theme='dark'] .doctor-photo .material-symbols-outlined,
+[data-theme='dark'] .patient-photo .material-symbols-outlined,
+[data-theme='dark'] .scan-thumb .material-symbols-outlined {
+  color: var(--text-secondary-dark);
+}
+
+/* Secondary text */
+.dark .demographics,
+.dark .relationship,
+.dark .doctor-info p,
+.dark .event-date,
+.dark .event-description,
+.dark .scan-date,
+.dark .subtitle,
+.dark .card-label,
+.dark .vital-label,
+.dark .vital-unit,
+.dark .med-dosage,
+[data-theme='dark'] .demographics,
+[data-theme='dark'] .relationship,
+[data-theme='dark'] .doctor-info p,
+[data-theme='dark'] .event-date,
+[data-theme='dark'] .event-description,
+[data-theme='dark'] .scan-date,
+[data-theme='dark'] .subtitle,
+[data-theme='dark'] .card-label,
+[data-theme='dark'] .vital-label,
+[data-theme='dark'] .vital-unit,
+[data-theme='dark'] .med-dosage {
+  color: var(--text-secondary-dark);
+}
+
+/* Primary text */
+.dark .vital-value,
+.dark .card-value,
+.dark .metric-value,
+.dark .med-info strong,
+.dark .scan-info strong,
+.dark .contact-info strong,
+.dark .doctor-info strong,
+.dark .entity-text,
+.dark .card-content h4,
+[data-theme='dark'] .vital-value,
+[data-theme='dark'] .card-value,
+[data-theme='dark'] .metric-value,
+[data-theme='dark'] .med-info strong,
+[data-theme='dark'] .scan-info strong,
+[data-theme='dark'] .contact-info strong,
+[data-theme='dark'] .doctor-info strong,
+[data-theme='dark'] .entity-text,
+[data-theme='dark'] .card-content h4 {
+  color: var(--text-dark);
+}
+
+/* Empty state */
+.dark .empty-state,
+[data-theme='dark'] .empty-state {
+  color: var(--text-secondary-dark);
+}
+
+/* Privacy toggle and theme toggle */
+.dark .privacy-toggle,
+.dark .theme-toggle-btn,
+[data-theme='dark'] .privacy-toggle,
+[data-theme='dark'] .theme-toggle-btn {
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+  color: var(--text-dark);
+}
+
+.dark .privacy-toggle:hover,
+.dark .theme-toggle-btn:hover,
+[data-theme='dark'] .privacy-toggle:hover,
+[data-theme='dark'] .theme-toggle-btn:hover {
+  background: var(--border-dark);
+}
+
+/* Alert tags */
+.dark .tag.alert,
+.dark .flag,
+.dark .condition-tag,
+[data-theme='dark'] .tag.alert,
+[data-theme='dark'] .flag,
+[data-theme='dark'] .condition-tag {
+  background: #664d03;
+  color: #ffecb5;
+  border-color: #997404;
+}
+
+/* Summary card alert */
+.dark .summary-card.alert,
+[data-theme='dark'] .summary-card.alert {
+  background: #664d03;
+  border-color: #997404;
+}
+
+/* Error message */
+.dark .error-message,
+[data-theme='dark'] .error-message {
+  background: rgba(255, 68, 68, 0.1);
+  color: #ff6b6b;
+  border-left-color: #ff6b6b;
+}
+
+/* Loading state */
+.dark .loading-state,
+[data-theme='dark'] .loading-state {
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+}
+
+.dark .loading-state p,
+[data-theme='dark'] .loading-state p {
+  color: var(--text-secondary-dark);
+}
+
+/* Spinner */
+.dark .spinner,
+[data-theme='dark'] .spinner {
+  border-color: var(--border-dark);
+  border-top-color: var(--primary-light);
+}
+
+/* Skeleton */
+.dark .skeleton,
+[data-theme='dark'] .skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary-dark) 25%,
+    var(--border-dark) 50%,
+    var(--bg-secondary-dark) 75%
+  );
+  background-size: 1000px 100%;
+}
+
+/* Demo hint */
+.dark .demo-hint,
+[data-theme='dark'] .demo-hint {
+  color: var(--text-secondary-dark);
+}
+
+/* Camera placeholder */
+.dark .camera-placeholder,
+[data-theme='dark'] .camera-placeholder {
+  color: var(--text-secondary-dark);
+}
+
+/* Progress indicator */
+.dark .progress-indicator p,
+[data-theme='dark'] .progress-indicator p {
+  color: var(--text-secondary-dark);
 }
