@@ -16,6 +16,7 @@ export default function VaidyaLinkLayout({ children }: { children: React.ReactNo
   const navItems = [
     { id: 'health-passport', label: 'Health', icon: 'badge', path: '/vaidyalink/health-passport' },
     { id: 'records', label: 'Records', icon: 'folder_open', path: '/vaidyalink/records' },
+    { id: 'scanner', label: 'Scanner', icon: 'document_scanner', path: '/vaidyalink/scanner' },
     { id: 'voice', label: 'Voice', icon: 'mic', path: '/vaidyalink/voice' },
     { id: 'doctor', label: 'Doctor', icon: 'medical_services', path: '/vaidyalink/doctor-portal' },
   ];

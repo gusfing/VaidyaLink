@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import RecordCard from '@/components/vaidyalink/RecordCard';
 import { mockMedicalRecords } from '@/lib/vaidyalink/mock-data';
 
@@ -8,6 +9,7 @@ type TabType = 'all' | 'prescriptions' | 'lab-reports' | 'scans';
 type DateFilter = 'latest' | 'all';
 
 export default function RecordsLibraryPage() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<TabType>('all');
   const [dateFilter, setDateFilter] = useState<DateFilter>('all');
@@ -126,7 +128,7 @@ export default function RecordsLibraryPage() {
       </div>
 
       {/* Floating Action Button */}
-      <button className="fab">
+      <button className="fab" onClick={() => router.push('/vaidyalink/scanner')}>
         <span className="material-symbols-outlined">add</span>
       </button>
     </div>
