@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import { getPresignedUrl } from '@/lib/document-scan-demo/api-client';
 import { uploadToS3, processDocument } from '@/lib/vaidyalink/api-client';
+import { processImageWithOCR, isOCRAvailable } from '@/lib/vaidyalink/ocr-processor';
 import type { ProcessingResults } from '@/lib/document-scan-demo/types';
 
 export default function ScannerPage() {
@@ -11,6 +12,7 @@ export default function ScannerPage() {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [results, setResults] = useState<ProcessingResults | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [ocrStatus, setOcrStatus] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 
@@ -33,32 +35,40 @@ export default function ScannerPage() {
     setScanning(true);
     setProcessing(true);
     setError(null);
+    setOcrStatus('');
 
     try {
       if (isDemoMode) {
-        // Demo mode: simulate upload and processing
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        // Check if OCR is available
+        const hasOCR = await isOCRAvailable();
 
-        // Process document with demo data
-        const processingResults = await processDocument(file.name);
-
-        setResults(processingResults);
+        if (hasOCR) {
+          // Use real OCR processing
+          setOcrStatus('Reading document with AI...');
+          const processingResults = await processImageWithOCR(file);
+          setResults(processingResults);
+        } else {
+          // Fallback to demo data if Tesseract.js not installed
+          setOcrStatus('Processing with demo data...');
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          const processingResults = await processDocument(file.name);
+          setResults(processingResults);
+        }
       } else {
         // Production mode: actual upload and processing
-        // Step 1: Get presigned URL for upload
+        setOcrStatus('Uploading document...');
         const { uploadUrl, s3Key } = await getPresignedUrl(file.name);
 
-        // Step 2: Upload to S3
         await uploadToS3(uploadUrl, file, file.type);
 
-        // Step 3: Process document
+        setOcrStatus('Processing document...');
         const processingResults = await processDocument(s3Key);
-
         setResults(processingResults);
       }
 
       setScanning(false);
       setProcessing(false);
+      setOcrStatus('');
     } catch (err) {
       console.error('Failed to process document:', err);
       setError(
@@ -66,6 +76,7 @@ export default function ScannerPage() {
       );
       setScanning(false);
       setProcessing(false);
+      setOcrStatus('');
     }
   };
 
@@ -125,7 +136,7 @@ export default function ScannerPage() {
           {processing && (
             <div className="progress-indicator">
               <div className="spinner"></div>
-              <p>Processing document...</p>
+              <p>{ocrStatus || 'Processing document...'}</p>
             </div>
           )}
 
@@ -149,8 +160,8 @@ export default function ScannerPage() {
 
           {isDemoMode && !processing && !results && (
             <p className="demo-hint">
-              Click &quot;Upload Document&quot; to select an image file. Demo mode will show sample
-              results.
+              Click &quot;Upload Document&quot; to select an image file. The app will use AI-powered
+              OCR to read the text from your document.
             </p>
           )}
         </div>
