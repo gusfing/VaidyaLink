@@ -118,30 +118,34 @@ function delay(ms: number): Promise<void> {
  * @returns Processing results with OCR text and extracted entities
  */
 export async function processDocument(s3Key: string): Promise<ProcessingResults> {
-  try {
-    if (isDemoMode()) {
-      await delay(2000);
-      return {
-        jobId: `doc-${Date.now()}`,
-        documentUrl: `https://example.com/${s3Key}`,
-        ocrText:
-          'Patient Name: John Doe\nDiagnosis: Type 2 Diabetes\nMedication: Metformin 500mg twice daily',
-        entities: [
-          { text: 'John Doe', type: 'PATIENT_NAME', confidence: 0.95 },
-          { text: 'Type 2 Diabetes', type: 'DIAGNOSIS', confidence: 0.92 },
-          { text: 'Metformin', type: 'MEDICATION', confidence: 0.98 },
-        ],
-        medications: [
-          { name: 'Metformin', dosage: '500mg', frequency: 'twice daily', confidence: 0.98 },
-        ],
-        conditions: ['Type 2 Diabetes'],
-        labResults: [],
-        fhirResource: {},
-        processedAt: new Date().toISOString(),
-      };
-    }
+  // Always use demo mode for VaidyaLink scanner
+  const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 
-    // Use existing document processor endpoint
+  if (demoMode) {
+    console.log('Using demo mode for document processing');
+    await delay(1500);
+    return {
+      jobId: `doc-${Date.now()}`,
+      documentUrl: `https://example.com/${s3Key}`,
+      ocrText:
+        'Patient Name: John Doe\nDiagnosis: Type 2 Diabetes\nMedication: Metformin 500mg twice daily',
+      entities: [
+        { text: 'John Doe', type: 'PATIENT_NAME', confidence: 0.95 },
+        { text: 'Type 2 Diabetes', type: 'DIAGNOSIS', confidence: 0.92 },
+        { text: 'Metformin', type: 'MEDICATION', confidence: 0.98 },
+      ],
+      medications: [
+        { name: 'Metformin', dosage: '500mg', frequency: 'twice daily', confidence: 0.98 },
+      ],
+      conditions: ['Type 2 Diabetes'],
+      labResults: [],
+      fhirResource: {},
+      processedAt: new Date().toISOString(),
+    };
+  }
+
+  try {
+    // Production mode: Use existing document processor endpoint
     const response = await apiClient.post<ProcessingResults>('/document/process', { s3Key });
     return response.data;
   } catch (error) {
