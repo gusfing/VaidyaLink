@@ -14,6 +14,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useToast } from './ToastContainer';
+import { useProcessingStages, ProcessingStage } from '@/hooks/useProgressiveReveal';
 
 // Supported languages with Sarvam AI language codes
 const LANGUAGES = [
@@ -55,6 +56,8 @@ export default function VoiceRecorder({ onTranscriptionComplete }: VoiceRecorder
   const [recordingTime, setRecordingTime] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const [processingStage, setProcessingStage] = useState(0);
+  const [processingMessage, setProcessingMessage] = useState('');
   const { showError, showSuccess } = useToast();
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -115,6 +118,28 @@ export default function VoiceRecorder({ onTranscriptionComplete }: VoiceRecorder
     if (!audioBlob) return;
 
     setIsProcessing(true);
+    setProcessingStage(0);
+
+    // Define processing stages for visual feedback
+    const stages = [
+      { message: 'Uploading audio...', duration: 800 },
+      { message: 'Transcribing speech...', duration: 2000 },
+      { message: 'Analyzing medical terms...', duration: 1200 },
+      { message: 'Extracting symptoms...', duration: 1000 },
+      { message: 'Finalizing results...', duration: 500 },
+    ];
+
+    // Simulate stage progression
+    let currentStage = 0;
+    const stageInterval = setInterval(() => {
+      if (currentStage < stages.length) {
+        setProcessingStage(currentStage);
+        setProcessingMessage(stages[currentStage].message);
+        currentStage++;
+      } else {
+        clearInterval(stageInterval);
+      }
+    }, 1000);
 
     try {
       // Create form data with audio file
@@ -129,14 +154,20 @@ export default function VoiceRecorder({ onTranscriptionComplete }: VoiceRecorder
       });
 
       if (!response.ok) {
+        clearInterval(stageInterval);
         throw new Error('Transcription failed');
       }
 
       const data = await response.json();
 
       if (!data.success) {
+        clearInterval(stageInterval);
         throw new Error(data.error || 'Transcription failed');
       }
+
+      // Wait for all stages to complete for better UX
+      await new Promise((resolve) => setTimeout(resolve, stages.length * 1000));
+      clearInterval(stageInterval);
 
       // Create result object
       const result: VoiceTranscriptionResult = {
@@ -154,6 +185,7 @@ export default function VoiceRecorder({ onTranscriptionComplete }: VoiceRecorder
       console.error('Processing failed:', error);
       showError('Failed to process recording. Please try again.');
       setIsProcessing(false);
+      clearInterval(stageInterval);
     }
   };
 
@@ -440,15 +472,46 @@ export default function VoiceRecorder({ onTranscriptionComplete }: VoiceRecorder
         {/* Processing State */}
         {isProcessing && (
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-6">
-            <div className="flex items-center justify-center space-x-3">
-              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
-              <div>
-                <p className="font-medium text-gray-700">Processing voice...</p>
-                <p className="text-sm text-gray-500">
-                  Transcribing and extracting medical entities
-                </p>
-              </div>
+            {/* Processing stages */}
+            <div className="processing-stages">
+              {[
+                { message: 'Uploading audio...', icon: 'cloud_upload' },
+                { message: 'Transcribing speech...', icon: 'hearing' },
+                { message: 'Analyzing medical terms...', icon: 'psychology' },
+                { message: 'Extracting symptoms...', icon: 'medical_information' },
+                { message: 'Finalizing results...', icon: 'check_circle' },
+              ].map((stage, index) => (
+                <div
+                  key={index}
+                  className={`stage-item ${
+                    index === processingStage
+                      ? 'active'
+                      : index < processingStage
+                        ? 'completed'
+                        : ''
+                  }`}
+                >
+                  <div className="stage-icon">
+                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+                      {index < processingStage ? 'check' : stage.icon}
+                    </span>
+                  </div>
+                  <div className="stage-message">{stage.message}</div>
+                </div>
+              ))}
             </div>
+
+            {/* Progress bar */}
+            <div className="progress-bar mt-4">
+              <div
+                className="progress-fill"
+                style={{ width: `${((processingStage + 1) / 5) * 100}%` }}
+              />
+            </div>
+
+            <p className="mt-4 text-center text-sm text-gray-500">
+              {processingMessage || 'Processing your voice recording...'}
+            </p>
           </div>
         )}
       </div>
