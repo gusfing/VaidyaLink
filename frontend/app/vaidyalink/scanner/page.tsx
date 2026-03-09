@@ -39,21 +39,11 @@ export default function ScannerPage() {
 
     try {
       if (isDemoMode) {
-        // Check if OCR is available
-        const hasOCR = await isOCRAvailable();
-
-        if (hasOCR) {
-          // Use real OCR processing
-          setOcrStatus('Reading document with AI...');
-          const processingResults = await processImageWithOCR(file);
-          setResults(processingResults);
-        } else {
-          // Fallback to demo data if Tesseract.js not installed
-          setOcrStatus('Processing with demo data...');
-          await new Promise((resolve) => setTimeout(resolve, 1500));
-          const processingResults = await processDocument(file.name);
-          setResults(processingResults);
-        }
+        // Always use demo data for now (OCR can be flaky)
+        setOcrStatus('Processing document...');
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        const processingResults = await processDocument(file.name);
+        setResults(processingResults);
       } else {
         // Production mode: actual upload and processing
         setOcrStatus('Uploading document...');
@@ -160,8 +150,8 @@ export default function ScannerPage() {
 
           {isDemoMode && !processing && !results && (
             <p className="demo-hint">
-              Click &quot;Upload Document&quot; to select an image file. The app will use AI-powered
-              OCR to read the text from your document.
+              Click &quot;Upload Document&quot; to select an image file. Demo mode will show sample
+              medical data extraction results.
             </p>
           )}
         </div>
