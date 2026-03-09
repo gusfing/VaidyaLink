@@ -136,7 +136,7 @@
   height: 70px;
   margin: 0px;
   border-radius: 50px;
-  background-color: rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
 }
 
 /* Desktop: Bottom nav with rounded bottom corners */
@@ -165,6 +165,10 @@
   min-height: var(--touch-target-min);
   flex: 1;
   max-width: 120px;
+  cursor: pointer;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1001;
 }
 
 .nav-item .material-symbols-outlined {
