@@ -35,12 +35,9 @@ export default function ScannerPage() {
     setError(null);
 
     try {
-      // In demo mode, we simulate the upload and processing
-      const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
-
       if (isDemoMode) {
-        // Simulate upload delay
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        // Demo mode: simulate upload and processing
+        await new Promise((resolve) => setTimeout(resolve, 1500));
 
         // Process document with demo data
         const processingResults = await processDocument(file.name);
