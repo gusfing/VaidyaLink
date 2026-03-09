@@ -20,37 +20,6 @@ export default function VoiceDashboardPage() {
       <h1>Voice Dashboard</h1>
       <p className="subtitle">बोलें और सुनें • Speak and Listen</p>
 
-      {/* Magic Metric */}
-      <div className="magic-metric">
-        <span className="material-symbols-outlined">auto_awesome</span>
-        <div>
-          <div className="metric-value">85%</div>
-          <div className="metric-label">AI Efficiency</div>
-        </div>
-      </div>
-
-      {/* Health Summary Grid */}
-      <div className="summary-grid">
-        <div className="summary-card">
-          <div className="card-icon">
-            <span className="material-symbols-outlined">groups</span>
-          </div>
-          <div className="card-content">
-            <div className="card-value">24</div>
-            <div className="card-label">Active Patients</div>
-          </div>
-        </div>
-        <div className="summary-card alert">
-          <div className="card-icon">
-            <span className="material-symbols-outlined">warning</span>
-          </div>
-          <div className="card-content">
-            <div className="card-value">3</div>
-            <div className="card-label">Critical Alerts</div>
-          </div>
-        </div>
-      </div>
-
       {/* Voice Recorder */}
       <div className="voice-section">
         <VoiceRecorder onTranscriptionComplete={handleTranscriptionComplete} />
@@ -63,26 +32,21 @@ export default function VoiceDashboardPage() {
         </div>
       )}
 
-      {/* Recent Scans */}
-      <div className="info-card">
-        <h3>
-          <span className="material-symbols-outlined">history</span>
-          Recent Scans
-        </h3>
-        <div className="scans-list">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="scan-item">
-              <div className="scan-thumb">
-                <span className="material-symbols-outlined">image</span>
-              </div>
-              <div className="scan-info">
-                <strong>Medical Document {i}</strong>
-                <span className="scan-date">2 hours ago</span>
-              </div>
-            </div>
-          ))}
+      {/* How it works */}
+      {!transcriptionResult && (
+        <div className="info-card">
+          <h3>
+            <span className="material-symbols-outlined">info</span>
+            How Voice Notes Work
+          </h3>
+          <ul style={{ paddingLeft: '1.5rem', lineHeight: '1.8' }}>
+            <li>Select your preferred language from 22 Indian languages</li>
+            <li>Record your symptoms, medications, or health concerns</li>
+            <li>AI transcribes and extracts medical information automatically</li>
+            <li>Review and save to your health records</li>
+          </ul>
         </div>
-      </div>
+      )}
     </div>
   );
 }

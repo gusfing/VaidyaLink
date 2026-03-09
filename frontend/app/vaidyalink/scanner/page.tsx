@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { getPresignedUrl } from '@/lib/document-scan-demo/api-client';
 import { uploadToS3, processDocument } from '@/lib/vaidyalink/api-client';
 import { processImageWithOCR, isOCRAvailable } from '@/lib/vaidyalink/ocr-processor';
+import { useProgressiveReveal } from '@/hooks/useProgressiveReveal';
 import type { ProcessingResults } from '@/lib/document-scan-demo/types';
 
 export default function ScannerPage() {
@@ -12,9 +13,14 @@ export default function ScannerPage() {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [results, setResults] = useState<ProcessingResults | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [ocrStatus, setOcrStatus] = useState<string>('');
+  const [processingStage, setProcessingStage] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+
+  // Progressive reveal for results
+  const revealedEntities = useProgressiveReveal(results?.entities || [], 300, !!results);
+  const revealedMedications = useProgressiveReveal(results?.medications || [], 350, !!results);
+  const revealedConditions = useProgressiveReveal(results?.conditions || [], 300, !!results);
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -35,38 +41,55 @@ export default function ScannerPage() {
     setScanning(true);
     setProcessing(true);
     setError(null);
-    setOcrStatus('');
+    setProcessingStage(0);
+
+    // Simulate processing stages
+    const stages = [
+      { message: 'Uploading document...', duration: 800 },
+      { message: 'Reading text...', duration: 1500 },
+      { message: 'Identifying medical entities...', duration: 1200 },
+      { message: 'Extracting medications...', duration: 1000 },
+      { message: 'Finalizing results...', duration: 500 },
+    ];
+
+    let currentStage = 0;
+    const stageInterval = setInterval(() => {
+      if (currentStage < stages.length) {
+        setProcessingStage(currentStage);
+        currentStage++;
+      } else {
+        clearInterval(stageInterval);
+      }
+    }, 1000);
 
     try {
       if (isDemoMode) {
-        // Always use demo data for now (OCR can be flaky)
-        setOcrStatus('Processing document...');
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        // Demo mode with staged processing
+        await new Promise((resolve) => setTimeout(resolve, stages.length * 1000));
+        clearInterval(stageInterval);
         const processingResults = await processDocument(file.name);
         setResults(processingResults);
       } else {
         // Production mode: actual upload and processing
-        setOcrStatus('Uploading document...');
         const { uploadUrl, s3Key } = await getPresignedUrl(file.name);
-
         await uploadToS3(uploadUrl, file, file.type);
 
-        setOcrStatus('Processing document...');
+        await new Promise((resolve) => setTimeout(resolve, stages.length * 1000));
+        clearInterval(stageInterval);
         const processingResults = await processDocument(s3Key);
         setResults(processingResults);
       }
 
       setScanning(false);
       setProcessing(false);
-      setOcrStatus('');
     } catch (err) {
       console.error('Failed to process document:', err);
+      clearInterval(stageInterval);
       setError(
         err instanceof Error ? err.message : 'Failed to process document. Please try again.'
       );
       setScanning(false);
       setProcessing(false);
-      setOcrStatus('');
     }
   };
 
@@ -124,9 +147,47 @@ export default function ScannerPage() {
           </div>
 
           {processing && (
-            <div className="progress-indicator">
-              <div className="spinner"></div>
-              <p>{ocrStatus || 'Processing document...'}</p>
+            <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-800">
+              {/* Processing stages */}
+              <div className="processing-stages">
+                {[
+                  { message: 'Uploading document...', icon: 'cloud_upload' },
+                  { message: 'Reading text...', icon: 'text_fields' },
+                  { message: 'Identifying medical entities...', icon: 'psychology' },
+                  { message: 'Extracting medications...', icon: 'medication' },
+                  { message: 'Finalizing results...', icon: 'check_circle' },
+                ].map((stage, index) => (
+                  <div
+                    key={index}
+                    className={`stage-item ${
+                      index === processingStage
+                        ? 'active'
+                        : index < processingStage
+                          ? 'completed'
+                          : ''
+                    }`}
+                  >
+                    <div className="stage-icon">
+                      <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+                        {index < processingStage ? 'check' : stage.icon}
+                      </span>
+                    </div>
+                    <div className="stage-message">{stage.message}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Progress bar */}
+              <div className="progress-bar mt-4">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${((processingStage + 1) / 5) * 100}%` }}
+                />
+              </div>
+
+              <p className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                AI is analyzing your document...
+              </p>
             </div>
           )}
 
@@ -159,7 +220,7 @@ export default function ScannerPage() {
 
       {/* Results Display */}
       {results && (
-        <div className="results-container">
+        <div className="results-container fade-in">
           <div className="results-header">
             <h2>Extracted Data</h2>
             <button onClick={handleReset} className="reset-btn">
@@ -169,7 +230,7 @@ export default function ScannerPage() {
           </div>
 
           {/* OCR Text */}
-          <div className="info-card">
+          <div className="info-card slide-in-left">
             <h3>
               <span className="material-symbols-outlined">text_fields</span>
               OCR Text
@@ -179,14 +240,18 @@ export default function ScannerPage() {
 
           {/* Extracted Entities */}
           {results.entities && results.entities.length > 0 && (
-            <div className="info-card">
+            <div className="info-card slide-in-left" style={{ animationDelay: '0.1s' }}>
               <h3>
                 <span className="material-symbols-outlined">label</span>
                 Extracted Entities
               </h3>
               <div className="entities-grid">
-                {results.entities.map((entity, i) => (
-                  <div key={i} className="entity-item">
+                {revealedEntities.map((entity, i) => (
+                  <div
+                    key={i}
+                    className="entity-item fade-in"
+                    style={{ animationDelay: `${i * 0.1}s` }}
+                  >
                     <span className="entity-type">{entity.type}</span>
                     <span className="entity-text">{entity.text}</span>
                     <span className="entity-confidence">
@@ -200,17 +265,19 @@ export default function ScannerPage() {
 
           {/* Medications */}
           {results.medications && results.medications.length > 0 && (
-            <div className="info-card">
+            <div className="info-card slide-in-left" style={{ animationDelay: '0.2s' }}>
               <h3>
                 <span className="material-symbols-outlined">medication</span>
                 Medications
               </h3>
-              {results.medications.map((med, i) => (
-                <div key={i} className="med-item">
-                  <strong>{med.name}</strong>
-                  <span>
-                    {med.dosage} • {med.frequency}
-                  </span>
+              {revealedMedications.map((med, i) => (
+                <div key={i} className="med-item fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
+                  <div className="med-info">
+                    <strong>{med.name}</strong>
+                    <span className="med-dosage">
+                      {med.dosage} • {med.frequency}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -218,14 +285,18 @@ export default function ScannerPage() {
 
           {/* Conditions */}
           {results.conditions && results.conditions.length > 0 && (
-            <div className="info-card">
+            <div className="info-card slide-in-left" style={{ animationDelay: '0.3s' }}>
               <h3>
                 <span className="material-symbols-outlined">health_and_safety</span>
                 Conditions
               </h3>
               <div className="conditions-list">
-                {results.conditions.map((condition, i) => (
-                  <span key={i} className="condition-tag">
+                {revealedConditions.map((condition, i) => (
+                  <span
+                    key={i}
+                    className="condition-tag fade-in"
+                    style={{ animationDelay: `${i * 0.1}s` }}
+                  >
                     {condition}
                   </span>
                 ))}
