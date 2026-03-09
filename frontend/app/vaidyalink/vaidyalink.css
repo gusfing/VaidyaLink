@@ -62,7 +62,7 @@
     min-height: calc(100vh - 4rem);
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
     border-radius: 24px;
-    overflow: hidden;
+    overflow: visible; /* Allow nav to be clickable */
     position: relative;
     margin: 0 auto;
   }
@@ -84,12 +84,12 @@
 /* Desktop: Header with rounded top corners */
 @media (min-width: 768px) {
   .vaidyalink-header {
-    position: absolute;
+    position: fixed;
     left: 50%;
     transform: translateX(-50%);
     max-width: 430px;
     width: 100%;
-    top: 0;
+    top: 2rem; /* Match body padding */
   }
 }
 
@@ -142,12 +142,12 @@
 /* Desktop: Bottom nav with rounded bottom corners */
 @media (min-width: 768px) {
   .bottom-nav {
-    position: absolute;
+    position: fixed;
     left: 50%;
     transform: translateX(-50%);
     max-width: 430px;
     width: 100%;
-    bottom: 0;
+    bottom: 2rem; /* Match body padding */
   }
 }
 
